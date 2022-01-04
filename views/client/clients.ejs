@@ -1,0 +1,153 @@
+
+<div class="container mt-2">
+    <p class="text-capitalize text-center text-success">Clients Page</p>
+</div>
+
+<div class="container mt-2">
+    <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/addClients">Add Clients</a>
+        </li>
+        <li class="nav-item">
+            <a href="/allClients" class="nav-link" >View All Clients</a>
+        </li>
+      </ul>
+</div>
+
+<%- include('../partials/searchClients') %> <!--including a component search clients frm partials-->
+<%if(searchClient){%>
+<div class="container mt-2 searchResultDiv border-bottom border-top border-2 border-success d-none">
+    <!--this div is stored for search results-->
+    <!--THIS WILL ONLY BE DISPLAYED when a search reasult is obtained -->
+
+    <div class="container m-1 p-2">
+        <ul class="nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Update</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Delete</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">View Transactions</a>
+            </li>
+          </ul>
+    </div>
+
+</div> 
+<%}%>
+
+<div class="container mt-2">
+    <div class="mt-1 pt-2 fw-bold">
+        <li class="list-group-item-light list-group-item text-capitalize text-success text-decoration-underline">wholesale & retail client transaction</li>
+    </div>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name Of Firm</th>
+            <th scope="col">Fine Silver</th>
+            <th scope="col">Labour</th>
+          </tr>
+        </thead>
+        <tbody> <!--this part of the table will be itereated for the display of data -->
+          <tr>
+            <th scope="row">1</th>
+            <td class="text-capitalize">anupam jewellers</td>
+            <td>3456 grms</td>
+            <td>12344 rs</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td colspan="2">Larry the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+    </table>
+    <div class="container m-1 p-2">
+        <a href="/notManufacturer/transactions" class="btn-primary btn btn-sm" role="link">View Wholesaler & Retailer Transation History</a>
+    </div>
+</div>
+
+<div class="container mt-2">
+    <div class="mt-1 pt-2 fw-bold">
+        <li class="list-group-item list-group-item-light text-capitalize text-success text-decoration-underline">manufacturer client transaction</li>
+    </div>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name Of Firm</th>
+            <th scope="col">Fine Silver</th>
+            <th scope="col">Labour</th>
+          </tr>
+        </thead>
+        <tbody> <!--this part of the table will be itereated for the display of data -->
+          <tr>
+            <th scope="row">1</th>
+            <td class="text-capitalize">anupam jewellers</td>
+            <td>3456 grms</td>
+            <td>12344 rs</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td colspan="2">Larry the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+    </table>
+    <div class="container m-1 p-2">
+        <a href="/manufacturer/transactions" class="btn-primary btn btn-sm" role="link">View Manufacturer Transation History</a>
+    </div>
+</div>
+
+
+<div class="container mt-2">
+    <div class=" mt-1 pt-2 fw-bold">
+        <li class="list-group-item list-group-item-light text-capitalize text-success text-decoration-underline">clients with pending payments</li>
+    </div>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name Of Firm</th>
+            <th scope="col">Fine Silver</th>
+            <th scope="col">Labour</th>
+          </tr>
+        </thead>
+        <tbody> <!--this part of the table will be itereated for the display of data -->
+          <tr>
+            <th scope="row">1</th>
+            <td class="text-capitalize">anupam jewellers</td>
+            <td>3456 grms</td>
+            <td>12344 rs</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td colspan="2">Larry the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+    </table>
+    <div class="container m-1 p-2">
+        <a href="/pending/transactions" class="btn-primary btn btn-sm" role="link">View Clients With Pending Payments </a>
+    </div>
+</div>

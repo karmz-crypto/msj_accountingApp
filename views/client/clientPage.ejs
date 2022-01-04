@@ -1,0 +1,176 @@
+<div class="container mt-2 p-2">
+    <li class="list-group-item list-group-item-light fw-bold text-capitalize"><%=webPageDataObject.nameOfClient%></li>
+</div>
+<div class="container m-3">
+  <button class="btn btn-sm btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    View Profile
+  </button>
+</div>
+<div class="container mt-2">
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body">
+      <table class="table table-striped caption-top text-capitalize">
+        <caption>Client Profile</caption>
+        <thead>
+          <tr>
+            <th scope="row">Name Of Client</th>
+            <td><%=webPageDataObject.nameOfClient%></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">GSTIN</th>
+            <td><%=webPageDataObject.gstNum%></td>
+          </tr>
+          <tr>
+              <th scope="row">Client Type</th>
+              <td><%=webPageDataObject.clientType%></td>
+          </tr>
+          <tr>
+            <th scope="row">City</th>
+            <td><%=webPageDataObject.city%></td>
+          </tr>
+          <tr>
+            <th scope="row">Tele-Num</th>
+            <td><%=webPageDataObject.teleNum%></td> 
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+<div class="container mt-2">
+    <div class="card">
+        <div class="card-header">
+          Recent Transaction 
+        </div>
+        <div class="card-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-6">
+                <input type="date">
+              </div>
+              <div class="col-6 text-capitalize text-muted" style="font-size: small;">
+                <span>*Wt. in Grams</span><br>
+                <span>*Lbr. in Rupees/Kg</span><br>
+                <span>*Wastage in %</span>
+              </div>
+            </div>
+          </div>
+          <p class="card-text">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Wt.</th>
+                    <th scope="col">Lbr</th>
+                    <th scope="col">Wastage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>plain bartan 97</td>
+                    <td>25434</td>
+                    <td>1500</td>
+                    <td>103</td>
+                    <tr>
+                      <th></th>
+                      <th scope="row">F.Silver</th>
+                      <td>27678</td>
+                      <th scope="row">Cash</th>
+                      <td>35000</td>
+                    </tr>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>plain bartan 97</td>
+                    <td>25434</td>
+                    <td>1500</td>
+                    <td>103</td>
+                    <tr>
+                      <th></th>
+                      <th scope="row">F.Silver</th>
+                      <td>27678</td>
+                      <th scope="row">Cash</th>
+                      <td>35000</td>
+                    </tr>
+                  </tr>
+                </tbody>
+              </table>
+          </p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item list-group-item-warning fw-bold">View Transations</li>
+        </ul>
+    </div>
+    <div class="card mt-1">
+        <div class="card-header">
+          Summary 
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            Fine Silver : <span class="mx-2 fw-bold"><%=webPageDataObject.paymentStatusSilver%></span> 
+            <% if(webPageDataObject.paymentStatusSilver<=0){%>
+                <span class="fw-bold text-success">Advance</span>
+              <%}else{%>
+                <span class="fw-bold text-danger">Pending</span>
+                <%}%>
+          </p>
+          <p class="card-text">Fine Gold : N/A </p>
+          <p class="card-text">
+            Cash :<span class="mx-2 fw-bold"><%=webPageDataObject.paymentStatusCash%></span>
+            <% if(webPageDataObject.paymentStatusCash<=0){%>
+              <span class="fw-bold text-success">Advance</span>
+            <%}else{%>
+              <span class="fw-bold text-danger">Pending</span>
+              <%}%>
+          </p>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="container mt-2">
+    <div class="card mb-2" style="width: 18rem;">
+        <div class="card-body">
+          <a class="btn btn-sm btn-primary card-link" href="/<%=webPageDataObject._id%>/updateClients">Update Client</a>
+          <button type="button" class="btn btn-light btn-sm mx-3" data-bs-toggle="modal" data-bs-target="#deleteClient">
+            Delete
+          </button>
+        </div>
+      </div>
+
+</div>
+
+
+<!--delete modal -->
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteClient" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Delete Client</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-capitalize ">
+        Do You Want To Delete <br> <span class="text-danger fw-bold"><%=webPageDataObject.nameOfClient%></span>
+        <li class="list-group-item list-group-item-danger text-capitalize">
+          warning: the action is cannot be undone once deleted
+        </li>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-primary btn-sm" href="/<%=webPageDataObject._id%>/delete">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>

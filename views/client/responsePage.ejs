@@ -1,0 +1,65 @@
+
+<!--added client display in response on rendering response page-->
+<% if(webPageResponseData ==='clientAddSuccess'|| webPageResponseData==='clientUpdateSuccess'){%>
+    <div class="container mt-2">
+        <table class="table table-striped caption-top text-capitalize">
+            <caption><%=responseMsg%></caption>
+            <thead>
+              <tr>
+                <th scope="row">Name Of Client</th>
+                <td><%=webData.nameOfClient%></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">GSTIN</th>
+                <td><%=webData.gstNum%></td>
+              </tr>
+              <tr>
+                  <th scope="row">Client Type</th>
+                  <td><%=webData.clientType%></td>
+              </tr>
+              <tr>
+                <th scope="row">City</th>
+                <td><%=webData.city%></td>
+              </tr>
+              <tr>
+                <th scope="row">Silver Balance</th>
+                <td><%=webData.paymentStatusSilver%></td> 
+              </tr>
+              <tr>
+                <th scope="row">Cash Balance</th>
+                <td><%=webData.paymentStatusCash%></td>
+              </tr>
+            </tbody>
+        </table>
+        <!--<div class="container m-2 p-2">
+            <a class="btn btn-sm btn-primary mx-2" href="/<%=webData._id%>/updateClients">Update</a>
+            <a class ="btn btn-sm btn-light mx-2" href="/<%=webData._id%>/deleteClients">Delete</a>
+        </div> this was nt reqired-->
+    </div>
+<%}%>
+
+<% if(webPageResponseData ==='clientAddExist'){%> <!--if clint already exist -->
+    <div class="container mt-2">
+        Client Already Exist
+    </div>
+<%}%>
+
+<% if(webPageResponseData ==='clientAddFail'){%> <!--failed to add client-->
+    <div class="container mt-2">
+        Failed To Add Client
+    </div>
+<%}%>
+
+<%if(webPageResponseData==='clientUpdateSuccess'){%>
+  <li class="list-group-item list-group-item-warning text-capitalize fw-bold">client updated successfully</li>
+<%}%>
+
+<%if(webPageResponseData==='clientUpdateFail'){%>
+  <li class="list-group-item list-group-item-warning text-capitalize fw-bold">client updated failed</li>
+<%}%>
+
+<%if(webPageResponseData==='clientDeleteSuccess'){%>
+  <li class="list-group-item list-group-item-warning text-capitalize fw-bold">client deleted successfully</li>
+<%}%>

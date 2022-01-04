@@ -1,0 +1,153 @@
+
+
+<!--
+    clients attributes 
+        1. name
+        2. gst
+        3. date of creation
+        3 . type of client : manufact/retailwhole
+        4. address  -> type : object
+        5. purchase transact -> type : objectId
+        6. sale transaction -> type : objectId
+        7. payment transact -> type : objectId
+        8. silver balance
+        9. labour cash
+        10. payment status : pending, advance or none.
+        11. transaction date wen payment status is 0 / none -> type : object, zeroPaymentStatusObject : date 
+        
+        payment status -ve : advance / +ve pending / 0 none 
+
+        
+
+-->
+
+<div class="container mt-2 mb-2 fw-bold">
+    <li class="list-group-item list-group-item-warning">
+        <span class="text-capitalize mx-5">Update Client</span>
+        <span class=""> Date : <script> document.write(new Date().toLocaleDateString()); </script></span>
+    </li>
+</div>
+<form method="POST" action="/<%=clientData._id%>/updateClients">
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="mb-3">
+                <label for="nameOfClient" class="form-label fw-bold">Name Of Client</label>
+                <input type="text" name="nameOfClient" class="form-control" id="nameOfClient" required value="<%=clientData.nameOfClient%>">
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+                <div class="invalid-feedback">
+                    Please Enter Valid Input
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="mb-3">
+                <label for="gst" class="form-label fw-bold">GSTIN</label>
+                <input type="text" name="gstNum" class="form-control" id="gst" value="<%=clientData.gstNum%>">
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="mb-3">
+                <select class="form-select fw-bold" name="clientType" aria-label="Default select example">
+                    <%if(clientData.clientType==='manufacturer'){%>
+                        <option selected value="manufacturer">Manufacturer</option>
+                    <%}else{%>
+                        <option value="manufacturer">Manufacturer</option>
+                    <%}%>
+                    <%if(clientData.clientType==='wholesaler'){%>
+                        <option selected value="wholesaler">Wholesaler</option>
+                    <%}else{%>
+                        <option value="wholesaler">Wholesaler</option>
+                    <%}%>
+                    <%if(clientData.clientType==='retailer'){%>
+                        <option selected value="retailer">Retailer</option>
+                    <%}else{%>
+                        <option value="retailer">Retailer</option>
+                    <%}%>
+                    <%if(clientData.clientType==='bullion trader'){%>
+                        <option selected value="bullion trader">Bullion Trader</option>
+                    <%}else{%>
+                        <option value="bullion trader">Bullion Trader</option>
+                    <%}%>
+                    
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <!--this is an empty div for arrangement of form fields-->
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="mb-3">
+                <div class="fw-bold">Personal Info :</div>
+                <div>
+                    <label for="teleNum" class="form-label fw-bold">Tele-Num</label>
+                    <input type="tel" class="form-control" id="teleNum" name="teleNum" required value="<%=clientData.teleNum%>">
+                </div>
+                <div>
+                    <label for="city" class="form-label fw-bold">City</label>
+                    <input type="text" class="form-control" id="city" name="city" required value="<%=clientData.city%>">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="mb-3">
+                <div class="fw-bold">
+                    Official Info :
+                </div>
+                <div>
+                    <label for="silverBalance" class="form-label fw-bold">Silver Balance (Grms)</label>
+                    <div class="form-check form-check-inline">
+                        <%if(clientData.paymentStatusSilver<=0){%>
+                            <input class="form-check-input" type="radio" disabled checked required name="silverStatus" id="inlineRadio1" value="advance">
+                        <%}else{%>
+                            <input class="form-check-input" type="radio" disabled required name="silverStatus" id="inlineRadio1" value="advance">
+                        <%}%>
+                        <label class="form-check-label" for="inlineRadio1">Advance</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <%if(clientData.paymentStatusSilver>0){%>
+                            <input class="form-check-input" type="radio" disabled checked name="silverStatus" id="inlineRadio2" value="pending">
+                        <%}else{%>
+                            <input class="form-check-input" type="radio" disabled name="silverStatus" id="inlineRadio2" value="pending">
+                        <%}%>
+                        
+                        <label class="form-check-label" for="inlineRadio2">Pending</label>
+                    </div>
+                    <input type="number" step="any" value="<%=clientData.paymentStatusSilver%>" readonly id="silverBalance" class="form-control" name="silverBalance">
+                </div>
+                <div>
+                    <label for="cashBalance" class="form-label fw-bold">Cash Balance (Rupees)</label>
+                    <div class="form-check form-check-inline">
+                        <%if(clientData.paymentStatusCash<=0){%>
+                            <input class="form-check-input" type="radio" disabled checked required name="cashStatus" id="inlineRadio3" value="advance">
+                            <label class="form-check-label" for="inlineRadio1">Advance</label>
+                        <%}else{%>
+                            <input class="form-check-input" type="radio" disabled required name="cashStatus" id="inlineRadio3" value="advance">
+                            <label class="form-check-label" for="inlineRadio1">Advance</label>
+                        <%}%> 
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <%if(clientData.paymentStatusCash>0){%>
+                            <input class="form-check-input" type="radio" disabled checked name="cashStatus" id="inlineRadio4" value="pending">
+                            <label class="form-check-label" for="inlineRadio2">Pending</label>
+
+                        <%} else{%>
+                            <input class="form-check-input" type="radio" disabled name="cashStatus" id="inlineRadio4" value="pending">
+                            <label class="form-check-label" for="inlineRadio2">Pending</label>
+                        <%}%> 
+                        
+                      </div>
+                    <input type="number" step="any" readonly value="<%=clientData.paymentStatusCash%>" id="cashBalance" class="form-control" name="cashBalance">
+                </div>
+            </div>
+        </div>
+
+        <div class="container mb-2">
+            <button type="submit" class="btn btn-primary btn-sm mx-2">Update Client</button>
+            <button type="reset" class="btn btn-light btn-sm mx-2">Reset</button>
+        </div>
+    </div>
+</div>
+</form>
