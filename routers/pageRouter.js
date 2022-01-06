@@ -23,10 +23,14 @@ api.get('/addPurchase',purchaseController.getAddPurchase);
 
 //product page routes
 api.get('/products',productController.getProductHomePage);
-api.get('/addProduct',productController.addProduct);
+api.get('/addProduct',productController.addProductPage);
 
 // post calls 
-
+    // 1. client post calls
 api.post('/addClients',clientsController.addClients2Db);
 api.post('/:id/updateClients',clientsController.updateClient2Db);
+
+    // 2. product post calls 
+api.post('/:id/addProduct',productController.addProduct);
+
 module.exports = api;

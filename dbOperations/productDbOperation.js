@@ -13,9 +13,14 @@ function addProductPage(req,res){
     });
 }
 
+function addProduct(req){
+    console.log('reached');
+}
+
 let productOperation = {
     getProductHomePage,
-    addProductPage
+    addProductPage,
+    addProduct
 };
 
 module.exports = productOperation;
