@@ -33,4 +33,7 @@ api.post('/:id/updateClients',clientsController.updateClient2Db);
     // 2. product post calls 
 api.post('/:id/addProduct',productController.addProduct);
 
+    //3. purchasse post calls 
+api.post('/addPurchase',purchaseController.addPurchase);
+
 module.exports = api;

@@ -9,6 +9,17 @@ exports.addProductPage = (req,res)=>{
 };
 
 exports.addProduct = (req,res)=>{
-    var response = productDbOperation.addProduct(req);
-    
+    var response = productDbOperation.productExist(req);
+    response.then(e=>{ console.log(e);
+        if(e){
+            res.render('product/responsePage',{
+                pageTitle:'Response Page',
+                responseMsg:'productExist'
+            });
+        }else{
+             productDbOperation.addProduct(req,res); }
+        
+      
+    }).catch();
+      
 };

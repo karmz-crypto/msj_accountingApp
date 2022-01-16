@@ -11,3 +11,7 @@ exports.getPurchase = (req,res)=>{
 exports.getAddPurchase = (req,res)=>{
     purchaseOperation.addPurchasePage(req,res);
 };
+
+exports.addPurchase= (req,res)=>{
+    purchaseOperation.addPurchase(req,res);
+};

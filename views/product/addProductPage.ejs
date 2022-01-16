@@ -7,10 +7,10 @@
 <div class="container p-2 mx-auto mt-3 mb-3">
     <ul class="nav mx-auto">
         <li class="nav-item mx-1">
-          <button class="btn btn-sm btn-primary" onclick="displayItemByWeight()">Add Product by Weight</button>
+          <button class="btn btn-sm btn-primary" id="displayItemByWeight" onclick="displayItemByWeight(event)">Add Product by Weight</button>
         </li>
         <li class="nav-item mx-1">
-          <button class="btn btn-sm btn-warning" onclick="displayItemByPiece()">Add Product by Pieces</button>
+          <button class="btn btn-sm btn-warning" id="displayItemByPiece" onclick="displayItemByPiece(event)">Add Product by Pieces</button>
         </li>
     </ul>
 </div>
@@ -22,7 +22,7 @@
                 <div class="col-12 col-md-6 col-lg-6 col-xl-6">
                     <div class="mb-3">
                         <label for="itemName" class="form-label fw-bold">Item Name</label>
-                        <input type="text" required class="form-control" name="itemName" id="itemName" aria-describedby="productHelp">
+                        <input type="text" required class="form-control" name="itemName" id="itemName" onmouseenter="formMsg(event,'name')" onmouseleave="formError(event,'name')" aria-describedby="productHelp">
                         <div id="productHelp" class="form-text">Try to spell the name correctly</div>
                     </div>
                 </div>
@@ -42,19 +42,19 @@
                 <div class="col-4 col-md-3 col-lg-3 col-xl-3 itemByWeight">
                     <div class="mb-1">
                         <label for="itemPurity" class="form-label fw-bold">Item Purity</label>
-                        <input type="number" required  step="any" class="form-control" name="itemPurity" id="itemPurity" aria-describedby="purityHelp">
+                        <input type="number"  step="any" max=100 min=0 class="form-control" name="itemPurity" id="itemPurity" onmouseenter="formMsg(event,'itemPurity')" onmouseleave="formError(event,'itemPurity')" aria-describedby="purityHelp">
                     </div>
                 </div>
                 <div class="col-4 col-md-3 col-lg-3 col-xl-3 itemByWeight">
                     <div class="mb-1">
                         <label for="wastage" class="form-label fw-bold">Purchase</label>
-                        <input type="number" required  step="any" class="form-control" name="wastage" id="wastage" aria-describedby="wastageHelp">
+                        <input type="number" step="any" class="form-control" name="purchasePurity" id="wastage" aria-describedby="wastageHelp">
                     </div>
                 </div>
                 <div class="col-4 col-md-3 col-lg-3 col-xl-3 itemByWeight">
                     <div class="mb-1">
                         <label for="wastage" class="form-label fw-bold">Sales</label>
-                        <input type="number" required  step="any" class="form-control" name="wastage" id="wastage" aria-describedby="wastageHelp">
+                        <input type="number" step="any" class="form-control" name="salePurity" id="wastage" aria-describedby="wastageHelp">
                     </div>
                 </div> 
                 <div class="col-12 itemByWeight">
@@ -67,14 +67,14 @@
                         </div>
                     </div>
                 </div>       
-                <div class="col-12 mt-3 itemByWeight">
+                <div class="col-12 mt-3 itemByWeightRadio">
                     <div>
                         <div class="form-check form-check-inline form-switch">
-                            <input class="form-check-input" required type="radio" role="switch" name="InStock" value="true" id="flexSwitchCheckDefault">
+                            <input class="form-check-input" type="radio" role="switch" name="radioLPKG" value="true" id="flexSwitchCheckLPKG" onchange="disableItemWeightQuantity(event)">
                             <label class="form-check-label" for="flexSwitchCheckDefault">Labour in per/Kg</label>
                         </div>
                         <div class="form-check form-check-inline form-switch">
-                            <input class="form-check-input" type="radio" role="switch" name="InStock" value="false" id="flexSwitchCheckChecked">
+                            <input class="form-check-input" type="radio" role="switch" name="radioLPKG" value="false" id="flexSwitchCheckLPP" onchange="disableItemWeightQuantity(event)">
                             <label class="form-check-label" for="flexSwitchCheckChecked">Labour in Per/Piece</label>
                         </div> 
                     </div>
@@ -92,27 +92,27 @@
                 <div class="col-4 col-md-3 col-lg-3 col-xl-3 itemByWeight">
                     <div class="mb-3">
                         <label for="purchaseLabour" class="form-label fw-bold">Pur. Labr</label>
-                        <input type="number" required  step="any" class="form-control" name="purchaseLabour" id="purchaseLabour" aria-describedby="purityHelp">
+                        <input type="number" step="any" class="form-control" name="purchaseLabour" id="purchaseLabour" aria-describedby="purchaseLabour">
                     </div>
                 </div>
 
                 <div class="col-4 col-md-3 col-lg-3 col-xl-3 itemByWeight">
                     <div class="mb-3">
                         <label for="saleLabourMax" class="form-label fw-bold">Max. Val</label>
-                        <input type="number" required  step="any" class="form-control" name="saleLabourMax" id="saleLabourMax" aria-describedby="purityHelp">
+                        <input type="number" step="any" class="form-control" name="saleLabourMax" id="saleLabourMax" aria-describedby="purityHelp">
                     </div>
                 </div>
                 <div class="col-4 col-md-3 col-lg-3 col-xl-3 itemByWeight">
                     <div class="mb-3">
                         <label for="saleLabourMax" class="form-label fw-bold">Min. Val</label>
-                        <input type="number" required  step="any" class="form-control" name="saleLabourMin" id="saleLabourMin" aria-describedby="purityHelp">
+                        <input type="number" step="any" class="form-control" name="saleLabourMin" id="saleLabourMin" aria-describedby="purityHelp">
                     </div>
                 </div>
 
-                <div class="container mt-2 itemByPiece d-none">
+                <div class="container mt-2 itemByPiece">
                     <div class="mb-3">
                         <label for="itemRatePerPiece" class="form-label fw-bold">Item Rate Per Piece</label>
-                        <input type="number"  disabled  step="any" class="form-control" name="itemRatePerPiece" id="itemRatePerPiece" aria-describedby="itemRatePerPiece">
+                        <input type="number" step="any" class="form-control" name="itemRatePerPiece" id="itemRatePerPiece" aria-describedby="itemRatePerPiece">
                     </div>
                 </div>
                 
@@ -130,30 +130,31 @@
                         <label class="form-check-label" for="flexSwitchCheckChecked">None</label>
                     </div>     
                 </div>
-                <div class="col-12 mt-2 itemByWeight inStockCheck">
-                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                        <div class="mb-3">
-                            <label for="itemWeight" class="form-label fw-bold">Item Weight</label>
-                            <input type="number" step="any" class="form-control" name="itemWeight" id="itemWeight" aria-describedby="itemWeight">
-                            <div class="form-text">Weight in 
-                                <span class="text-success fw-bold">Grams</span><br>
-                                <span class="text-info fw-bold">Please Enter The Weight Of Product</span>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="itemQuantityWeight" class="form-label fw-bold">Item Quantity</label>
-                            <input type="number" step="any" class="form-control" name="itemQuantityWeight" id="itemQuantityWeight" aria-describedby="itemQuantityWeight">
-                            <div class="form-text">Item in 
-                                <span class="text-success fw-bold">Pieces</span><br>
-                                <span class="text-info fw-bold">Please Enter The Quantity Of Product</span>
-                            </div>
+                <div class="col-12 mt-2 itemByWeight">
+                    <div class="mb-3">
+                        <label for="itemWeight" class="form-label fw-bold">Item Weight</label>
+                        <input type="number" step="any" class="form-control" name="itemWeight" id="itemWeight" aria-describedby="itemWeight">
+                        <div class="form-text">Weight in 
+                            <span class="text-success fw-bold">Grams</span><br>
+                            <span class="text-info fw-bold">Please Enter The Weight Of Product</span>
                         </div>
                     </div>
                 </div>
-                <div class="container mt-3 itemByPiece d-none">
+
+                <div class="col-12 mt-2 itemByWeight labourPerPiece">
+                    <div class="mb-3">
+                        <label for="itemQuantityWeight" class="form-label fw-bold">Item Quantity</label>
+                        <input type="number" class="form-control" name="itemQuantityWeight" id="itemQuantityWeight" aria-describedby="itemQuantityWeight">
+                        <div class="form-text">Item in 
+                            <span class="text-success fw-bold">Pieces</span><br>
+                            <span class="text-info fw-bold">Please Enter The Quantity Of Product</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt-3 itemByPiece">
                     <div class="mb-3">
                         <label for="itemQuantityNumber" class="form-label fw-bold">Item Quantity</label>
-                        <input type="number" step="any" required class="form-control" name="itemQuantityNumber" id="itemQuantityNumber" aria-describedby="itemQuantityNumber">
+                        <input type="number" step="any" class="form-control" name="itemQuantityNumber" id="itemQuantityNumber" aria-describedby="itemQuantityNumber">
                         <div class="form-text">Item in 
                             <span class="text-success fw-bold">Pieces</span><br>
                             <span class="text-info fw-bold">Please Enter The Quantity Of Product</span>

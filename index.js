@@ -5,7 +5,7 @@ const ejs = require('ejs');
 const layouts = require('express-ejs-layouts');
 const port = process.env.PORT || 7000;
 const pageRouter = require('./routers/pageRouter');
-//const apiFetchRouter = require('./routers/apiFetchRouter');
+const apiPageRouter = require('./routers/apiPageRouter');
 const { checkNetworkStatus } = require('check-network-status');
 const app = express();
 checkNetworkStatus({
@@ -26,6 +26,7 @@ app.use(layouts);
 mongoose.Promise=global.Promise;
 app.use(express.static(__dirname+'/static/js'));
 app.use('/',pageRouter);
+app.use('/apiPageRouter',apiPageRouter);
 //app.use('/api',apiFetchRouter);
 
 app.listen(port,()=>console.log(`app is running on port${port}`));

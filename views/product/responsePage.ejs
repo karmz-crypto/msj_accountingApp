@@ -1,0 +1,37 @@
+<div class="container mt-3">
+    <%if(responseMsg==='productExist'){%>
+        <li class="list-group-item list-group-item-warning text-capitalize">
+            the product already exist
+        </li>
+    <%}%>
+
+    <%if(responseMsg==='productAddSuccess'){%>
+        <table class="table table-striped caption-top text-capitalize">
+            <caption><%=responseMsgText%></caption>
+            <thead>
+              <tr>
+                <th scope="row">Item</th>
+                <td><%=webData.itemName%></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Purity</th>
+                <td><%=webData.itemPurity%></td>
+              </tr>
+              <tr>
+                  <th scope="row">Purchase Labour</th>
+                  <td><%=webData.purchaseLabour%></td>
+              </tr>
+              <tr>
+                <th scope="row">Purchase Wastage</th>
+                <td><%=webData.purchasePurity%></td>
+              </tr>
+            </tbody>
+        </table>
+        <div class="container mt-2">
+            <a class="btn btn-sm btn-primary" href='/<%=webData._id%>/update/product'>Update</a>
+            <a class="btn btn-sm btn-light" href="/<%=webData._id%>/delete/product">Delete</a>
+        </div>
+    <%}%>
+</div>
