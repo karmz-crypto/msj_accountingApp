@@ -6,7 +6,7 @@
     <form method="POST" action="/addPurchase">
        <div class="row">
            <div class="col-12 col-md-6 col-lg-6 col-xl-6 mb-2">
-                <select class="form-select fw-bold mb-3 text-capitalize" aria-label="Default select example">
+                <select class="form-select fw-bold mb-3 text-capitalize" aria-label="Default select example" onchange="fetchClient(event)">
                     <option selected>Select a Client</option>
                     <%clientData.forEach(e=>{%>
                         <option value="<%=e._id%>"><%=e.nameOfClient%></option>
@@ -16,6 +16,47 @@
                 <div class="form-text text-capitalize fw-bold">
                     <span class="text-mute mx-1">Client not in list</span>
                     <a href="/addClients" class="text-decoration-none">Add client</a>
+                </div>
+                <div class="clientDataDiv d-none text-muted mt-1 mb-1 p-2 text-capitalize border border-secondary">
+                    <div class="row">
+                        <div class="p-2">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-file-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"/>
+                                </svg>
+                            </span>
+                            <span class="mx-1">Pending</span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-file-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"/>
+                                </svg>
+                            </span>
+                            <span class="mx-1">
+                                Advance
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            client type: <span class="clientType mx-1 text-success fw-bold">retailer</span>
+                        </div>
+                        <div class="col-6">
+                           <div>Fine Silver Balance:</div> 
+                           <div><span class="silverBalance-client fw-bold mx-1"></span>Grms.</div> 
+                        </div>
+                        <div class="col-6">
+                            <div>Cal.Fine Silver:</div> 
+                            <div><span class="calSilverBalance-client fw-bold mx-1"></span>Grms.</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div>Pur.Cash bal:</div>
+                            <div><span class="purchaseCash-client fw-bold mx-1"></span> Rs.</div>
+                        </div>
+                        <div class="col-6">
+                            <div>Cal.Pur.Cash bal:</div>
+                            <div><span class="calPurchaseCash-client fw-bold mx-1"></span> Rs.</div>
+                        </div>
+                    </div>
                 </div>
            </div>
            <div class="col-12 col-md-6 col-lg-6 col-xl-6 mb-2">
@@ -34,8 +75,12 @@
        </div>
 
     <div class="text-capitalize mt-2 purchaseTable">
-        <li class="list-group-item-warning list-group-item mb-2">
+        
+        <li class="list-group-item-warning list-group-item mb-2 p-2">
             Purchase List Items
+            <span class="fw-bold float-end" type="button" onclick="editProductProcess()">
+                E d i t ! 
+            </span>
         </li>
         <!--this is where the purchase table is populated-->
     </div>
@@ -44,10 +89,12 @@
             <div class="col-6 border-end border-secondary">
                 <span class="fw-bold text-muted">Net.Fine Silver</span>
                 <span class="fw-bold text-success netFineSilver"></span>
+                <input class="d-none" name="netFineSilver" id="netFineSilver">
             </div>
             <div class="col-6">
                 <span class="fw-bold text-muted">Net.Purchase Cash</span>
                 <span class="fw-bold text-success netPurchaseCash"></span>
+                <input class="d-none" name="netPurchaseCash" id="netPurchaseCash">
             </div>
         </div>
 
@@ -56,7 +103,7 @@
 
         </div>
         <div class="m-4 float-end">
-            <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+            <button class="btn btn-sm btn-primary submitBtn" type="submit">Submit Purchase</button>
         </div>
     </form>
     
@@ -68,9 +115,8 @@
   <!-- Modal -->
   
 
-    <!-- Button trigger modal -->
   
-  <!-- Modal -->
+  <!-- Modal to add product -->
   <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -83,33 +129,67 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-6 col-sm-12 col-xs-12">
-                            item in stock: <span class="itemInStock text-success fw-bold mx-1"></span>Grams
+                            <div class="text-muted fw-bold form-text">
+                                item in stock:
+                            </div>
+                            <div>
+                                <span class="itemInStock text-success fw-bold mx-1"></span>Grams
+                            </div> 
                         </div>
                         <div class="col-6 col-sm-12 col-xl-12">
-                            Stock increment:<span class="stockIncrement mx-1 text-success fw-bold"></span>Grams
+                            <div class="text-muted fw-bold form-text">
+                                Stock increment:
+                            </div>
+                            <div>
+                                <span class="stockIncrement mx-1 text-success fw-bold"></span>Grams
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
             </div>
             <div class="mb-3">
                 <label for="itemWeight" class=" fw-bold form-label text-capitalize">item weight</label>
-                <input type="number" step="any" class="form-control" id="itemWeight" onfocusout="decorateModal(event)" placeholder="Item Weight">
+                <input type="number" step="any" class="form-control" value=0 id="itemWeight" onfocusout="decorateModal(event)">
                 <div class="form-text text-success text-capitalize">weight in grams</div>
             </div>
             <div class="form-text text-capitalize text-muted border border-secondary p-2">
-                Item purity : <span class="itemPurity fw-bold text-success"></span><span class="mx-2"></span>
-                Last purchase labour : <span class="purchaseLabour fw-bold text-success"></span><br>
-                Last purchase wastage : <span class="purchaseWastage fw-bold text-success"></span>
+                <div>
+                    Item purity : <span class="itemPurity fw-bold text-success"></span><span class="mx-2"></span>
+                </div>
+                <div>
+                    <div class="purchaseLabourDisplayModal">
+                       <span class="purchaseLbour_text mx-1">most purchase labour :</span>  <span class="purchaseLabour fw-bold text-success"></span>
+                    </div>
+                    <div class="purchaseLbour_input_modal d-none">
+                        <label class="form-label" for="purchaseLabour">Purchase Labour</label>
+                        <input type="number" id="purchaseLabour" name="purchaseLabour" onfocusout="decorateModal(event)">
+                        <div class="form-text text-capitalize text-success">*change labour</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="purchaseWastageDisplayModal">
+                       <span class="purchaseWastage_text">most purchase wastage :</span>  <span class="purchaseWastage fw-bold text-success"></span>
+                    </div>
+                    <div class="purchaseWastage_input_modal d-none">
+                        <label class="form-label" for="purchaseWastage">Purchase Wastage</label>
+                        <input type="number" id="purchaseWastage" name="purchaseWastage" onfocusout="decorateModal(event)">
+                        <div class="text-capitalize text-success form-text">*change wastage</div>
+                    </div>
+                </div>
             </div>
             <div class="text-capitalize form-text">
                 <li class="list-group-item-light list-group-item">
                    <div class="container">
                        <div class="row">
-                           <div class="col-6 float-start text-info">
+                           <div class="col-6 float-start text-info" onclick="changeLabourModal()">
                                change labour
                            </div>
                            <div class="col-6 float-end text-danger">
-                               fine silver. <span class="fineSilverModal text-dark"></span>
+                               <div>fine silver. <span class="fineSilverModal text-dark"></span></div>
+                               <div class="d-none">
+                                   <input name='fineSilver_inputModal' id="fineSilver_inputModal">
+                               </div>
                            </div>
                        </div>
                    </div>
@@ -117,11 +197,14 @@
                 <li class="list-group-item list-group-item-light text-info">
                     <div class="container">
                         <div class="row">
-                            <div class="col-6 float-start text-info">
+                            <div class="col-6 float-start text-info" onclick="changeWastageModal()">
                                 change wastage
                             </div>
                             <div class="col-6 float-end text-danger">
-                                labour cash. <span class="labourCashModal text-dark"></span>
+                                <div>labour cash. <span class="labourCashModal text-dark"></span></div>
+                                <div class="d-none">
+                                    <input name="labourCash_inputModal" id="labourCash_inputModal">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -135,6 +218,61 @@
       </div>
     </div>
   </div>
+
+  <!--modal to update and delete roduct-->
+
+  <!-- Button trigger modal -->  
+  <!-- Modal -->
+  <div class="modal fade" id="upDelModal" tabindex="-1" aria-labelledby="upDelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="upDelModalLabel">Warning !</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <li class="list-group-item list-group-item-danger text-danger text-capitalize">
+            the product is already added to the purchase list !!!!
+          </li>
+        </div>
+        <!--<div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>-->
+      </div>
+    </div>
+  </div>
+  <!--modal for list of product -->
+
+  <!-- Button trigger modal -->
+   <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productListModal">
+    Launch demo modal
+    </button>-->
+  
+  <!-- Modal -->
+  <div class="modal fade" id="productListModal" tabindex="-1" aria-labelledby="productListModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="productListModalLabel">Purchase Product List</h5>
+          <button type="button" class="btn-close productListModalClose" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-capitalize">
+            <ul class="list-group productListGroup text-muted fw-bold ">Click on the produt to edit
+                
+            </ul>
+        </div>
+        <div class="modal-footer">
+          <!--<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>-->
+          <li class="list-group-item list-group-item-danger fw-bold text-danger">
+              # the selected item will be removed from the purchase list for updating the product detail entries
+          </li>
+        </div>
+      </div>
+    </div>
+  </div>
+
     
   
 

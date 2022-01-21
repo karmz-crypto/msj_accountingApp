@@ -43,6 +43,7 @@ function getClients(req,res){
 
 
     }else{
+        //console.log('fetch all clients');
         clientsModel.find().exec()
         .then(e=>{
             res.render('client/allClients',
@@ -52,7 +53,7 @@ function getClients(req,res){
             }
         );
         })
-            .catch();
+            .catch(err=>{console.log(err)});
         
     }
    

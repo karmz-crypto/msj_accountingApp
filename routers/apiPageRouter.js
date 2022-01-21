@@ -1,11 +1,15 @@
 const express = require('express');
-const data = require('../dbOperations/getDataFromDb');
+//const data = require('../dbOperations/getDataFromDb');
 const apiProductController = require('../apiController/productController');
+const apiClientController = require('../apiController/clientsController');
 const apiPageRouter = express.Router();
 
 //get data router
         //product api router
 apiPageRouter.get('/getSelectedProduct/:id',apiProductController.selectedProductData);
+
+        //client api router
+apiPageRouter.get('/getSelectedClient/:id',apiClientController.selectedClientData);
 
 //post data router
 module.exports = apiPageRouter;

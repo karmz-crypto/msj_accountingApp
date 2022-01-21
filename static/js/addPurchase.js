@@ -3,8 +3,25 @@
 window.onload= ()=>{
     console.log('purchase js connected');
 };
+/*
+var client = {
+    onSelectClient = (event)=>{
+        var id = event.tatget.value;
+        var url = `/pageRouter/getSelectedClient/${id}`;
+        fetchData(url,'client');
+    }
+};
 
-function openModal(selectUrl){
+function onSelectClient(event){
+    //1.fetch client details
+    var id = event.tatget.value;
+    var url = `/pageRouter/getSelectedClient/${id}`;
+    fetchData(url,'client');
+
+} */
+
+
+function openModal(selectUrl){ // modal for selected product 
 
     //2 things will happen ----1. it will fetch the details of the product 2. it will launch a modal 
     //create a modal btn <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -19,14 +36,19 @@ function openModal(selectUrl){
     if(isPresent){
         if(selectUrl==='product'){url=`/apiPageRouter/getSelectedProduct/${id}`}
         // console.log(url)
-        fetchData(url); // fetch the required data
-        activateModal();
+        fetchData(url,'product'); // fetch the required data
+        activateModal("#staticBackdrop");//the target modal identifier
     }else{
         //another modal
         console.log('present item ');
+        updateDeleteModal();
     }
     
   
+}
+
+function updateDeleteModal(){
+    activateModal('#upDelModal')
 }
 
 function checkIfProductExist(productId){
@@ -42,7 +64,12 @@ function checkIfProductExist(productId){
     }
 }
 
-function fetchData(url){ // this function fetches data frm the database of product database
+function fetchClient(event){
+    var url = `/apiPageRouter/getSelectedClient/${event.target.value}`;
+    fetchData(url,'client')
+}
+
+function fetchData(url,identifier){ // this function fetches data frm the database of product database
     fetch(url)
     .then(
       function(response) {
@@ -54,7 +81,13 @@ function fetchData(url){ // this function fetches data frm the database of produ
         // Examine the text in the response
         response.json().then(function(data) {
          // console.log(data); -- it contains the data from server and now can be used 
-         insertDataIntoModal(data); //this func inserts data into modal from fetched data.......  
+         if(identifier==='product'){
+            insertDataIntoModal(data); //this func inserts data into modal from fetched data.......  
+         }
+         if(identifier==='client'){
+            insertClientData(data);
+         }
+         
         });
       }
     )
@@ -63,16 +96,44 @@ function fetchData(url){ // this function fetches data frm the database of produ
     });
 }
 
+function insertClientData(data){
+    document.querySelector('.clientType').innerHTML=data.clientType;
+    if(data.paymentStatusSilver<0){
+        document.querySelector('.silverBalance-client').classList.add('text-success');
+        document.querySelector('.silverBalance-client').innerHTML = data.paymentStatusSilver;
+    }else{
+        
+        document.querySelector('.silverBalance-client').classList.add('text-danger');
+        document.querySelector('.silverBalance-client').innerHTML = data.paymentStatusSilver;
+    }
+
+    if(data.paymentStatusCash<0){
+        document.querySelector('.purchaseCash-client').classList.add('text-success')
+        document.querySelector('.purchaseCash-client').innerHTML = data.paymentStatusCash;
+    }else{
+        document.querySelector('.purchaseCash-client').classList.add('text-danger');
+        document.querySelector('.purchaseCash-client').innerHTML = data.paymentStatusCash;
+    }
+
+    document.querySelector('.clientDataDiv').classList.remove('d-none');
+    
+    
+}
+
 function insertDataIntoModal(data){ // function to insert data into modal.
+   
     document.querySelector('.modal-title').innerHTML = data.itemName;
     document.querySelector('.itemInStock').innerHTML=data.inStockQuantity;
     document.querySelector('.itemPurity').innerHTML=data.itemPurity;
-    document.querySelector('.purchaseLabour').innerHTML=data.purchaseLabour;
-    document.querySelector('.purchaseWastage').innerHTML=data.purchasePurity;
+    document.querySelector('#purchaseLabour').value = data.purchaseLabour;
+    document.querySelector('.purchaseLabour').innerHTML = document.querySelector('#purchaseLabour').value
+    document.querySelector('#purchaseWastage').value=data.purchasePurity;
+    document.querySelector('.purchaseWastage').innerHTML=document.querySelector('#purchaseWastage').value
     document.querySelector('.saveBtn').setAttribute('data-id',data._id);
+   
 }
 
-function activateModal(){
+function activateModal(target){
     //create a modal btn <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
  // Launch demo modal
  // </button> 
@@ -80,7 +141,7 @@ function activateModal(){
  var btn = document.createElement('button');
  btn.classList.add('testBtn');
  btn.setAttribute('type','button');
- btn.setAttribute('data-bs-target',"#staticBackdrop");
+ btn.setAttribute('data-bs-target',target);
  btn.setAttribute('data-bs-toggle','modal');
  //console.log(btn);
  document.querySelector('.test').appendChild(btn);
@@ -89,13 +150,34 @@ function activateModal(){
 }
 
 function decorateModal(event){
-    var stockIncrement = parseFloat(event.target.value) + parseFloat(document.querySelector('.itemInStock').innerHTML); 
-    document.querySelector('.stockIncrement').innerHTML = stockIncrement;
-    var fineSilver = parseFloat(event.target.value)*(parseFloat(document.querySelector('.itemPurity').innerHTML)+parseFloat(document.querySelector('.purchaseWastage').innerHTML))/100;
-    document.querySelector('.fineSilverModal').innerHTML = fineSilver;
-    var labourCash = parseFloat(event.target.value)*parseFloat(document.querySelector('.purchaseLabour').innerHTML)/1000;
-    document.querySelector('.labourCashModal').innerHTML = labourCash;
+    if(event.target.getAttribute('id')==='itemWeight'){
+        document.querySelector('.stockIncrement').innerHTML= parseFloat(event.target.value) + parseFloat(document.querySelector('.itemInStock').innerHTML); 
+        document.querySelector('#fineSilver_inputModal').value = parseFloat(event.target.value)*(parseFloat(document.querySelector('.itemPurity').innerHTML)+parseFloat(document.querySelector('#purchaseWastage').value))/100;
+        document.querySelector('.fineSilverModal').innerHTML = document.querySelector('#fineSilver_inputModal').value;
+        document.querySelector('#labourCash_inputModal').value = parseFloat(event.target.value)*parseFloat(document.querySelector('#purchaseLabour').value)/1000;
+        document.querySelector('.labourCashModal').innerHTML = document.querySelector('#labourCash_inputModal').value; 
+    }else if(event.target.getAttribute('id')==='purchaseLabour'){
+        document.querySelector('.purchaseLbour_input_modal').classList.add('d-none');
+        document.querySelector('.purchaseLabourDisplayModal').classList.remove('d-none');
+        document.querySelector('#labourCash_inputModal').value = parseFloat(event.target.value)*parseFloat(document.querySelector('#itemWeight').value)/1000;
+        document.querySelector('.labourCashModal').innerHTML = document.querySelector('#labourCash_inputModal').value;
+        document.querySelector('.purchaseLabour').innerHTML = document.querySelector('#purchaseLabour').value  ;  
+    }else if(event.target.getAttribute('id')==='purchaseWastage'){
+        document.querySelector('.purchaseWastage_input_modal').classList.add('d-none');
+        document.querySelector('.purchaseWastageDisplayModal').classList.remove('d-none');
+        document.querySelector('#fineSilver_inputModal').value = parseFloat(document.querySelector('#itemWeight').value)*(parseFloat(document.querySelector('.itemPurity').innerHTML)+parseFloat(event.target.value))/100;
+        document.querySelector('.fineSilverModal').innerHTML = document.querySelector('#fineSilver_inputModal').value;
+        document.querySelector('.purchaseWastage').innerHTML=document.querySelector('#purchaseWastage').value;
+    }  
+}
 
+function changeLabourModal(){
+    document.querySelector('.purchaseLabourDisplayModal').classList.add('d-none');
+    document.querySelector('.purchaseLbour_input_modal').classList.remove('d-none');
+}
+function changeWastageModal(){  
+    document.querySelector('.purchaseWastageDisplayModal').classList.add('d-none');
+    document.querySelector('.purchaseWastage_input_modal').classList.remove('d-none');
 }
 
 function createPurchaseTable(event){
@@ -176,17 +258,17 @@ function createTableStructure(event){
         select_div2_col2_row1:{
             el:'select',
             htmlClass:['form-select','d-none'],
-            attr:{'name':'itemName'},
+            attr:{'name':'itemId'},
             text:''
         },
         option_div2_col2_row1:{
             el:'option',
-            htmlClass:[],
+            htmlClass:['itemNameForm'],
             attr:{'value':event.target.dataset.id,'selected':'true'},
             text: document.querySelector('.modal-title').innerHTML
         },
         text_div2_col2_row1:{
-            el:'span',
+            el:'span', 
             htmlClass:['text-success','fw-bold'],
             attr:{},
             text: document.querySelector('.modal-title').innerHTML
@@ -199,7 +281,7 @@ function createTableStructure(event){
         },
         div2_col3_row1:{
             el:'div',
-            htmlClass:['text-success','fw-bold'],
+            htmlClass:['text-success','fw-bold','itemPurityDisplay'],
             attr:{},
             text: document.querySelector('.itemPurity').innerHTML
         },
@@ -243,7 +325,7 @@ function createTableStructure(event){
             el:'span',
             htmlClass:['text-success','fw-bold','mx-1'],
             attr:{},
-            text: document.querySelector('.purchaseWastage').innerHTML
+            text: document.querySelector('#purchaseWastage').value
         },
         div2_col1_row2:{
             el:'div',
@@ -261,7 +343,7 @@ function createTableStructure(event){
             el:'span',
             htmlClass:['text-success','fw-bold','mx-1'],
             attr:{},
-            text: document.querySelector('.purchaseLabour').innerHTML
+            text: document.querySelector('#purchaseLabour').value
         },
         div1_col2_row2:{
             el:'div',
@@ -274,11 +356,6 @@ function createTableStructure(event){
             htmlClass:['text-success','fw-bold'],
             attr:{},
             text: document.querySelector('#itemWeight').value +' Grms'
-        },
-        itemWeight_input:{
-            el:'input',
-            htmlClass:['d-none'],
-            attr:{'name':'itemWeight','value':document.querySelector('#itemWeight').value}
         },
         div1_col3_row2:{
             el:'div',
@@ -302,7 +379,7 @@ function createTableStructure(event){
             el:'span',
             htmlClass:['text-success','fw-bold','mx-1'],
             attr:{},
-            text: document.querySelector('.fineSilverModal').innerHTML
+            text: document.querySelector('#fineSilver_inputModal').value
         },
         span1_div2_col3_row2:{
             el:'span',
@@ -314,22 +391,43 @@ function createTableStructure(event){
             el:'span',
             htmlClass:['text-success','fw-bold','mx-1'],
             attr:{},
-            text: document.querySelector('.labourCashModal').innerHTML
+            text: document.querySelector('#labourCash_inputModal').value
         },
         //trial code 
         
         fineSilver_input:{
             el:'input',
             htmlClass:['d-none'],
-            attr:{'name':'fineSilver','value':document.querySelector('.fineSilverModal').innerHTML},
+            attr:{'name':'fineSilver','value':document.querySelector('#fineSilver_inputModal').value},
             text:''
         },
         labourCash_input:{
             el:'input',
             htmlClass:['d-none'],
-            attr:{'name':'labourCash','value':document.querySelector('.labourCashModal').innerHTML},
+            attr:{'name':'labourCash','value':document.querySelector('#labourCash_inputModal').value},
             text:''
-        }
+        },
+        itemWeight_input:{
+            el:'input',
+            htmlClass:['d-none'],
+            attr:{'name':'itemWeight','value':document.querySelector('#itemWeight').value}
+        },
+        itemWastage_input:{
+            el:'input',
+            htmlClass:['d-none'],
+            attr:{'name':'itemWastage','value':document.querySelector('#purchaseWastage').value}
+        },
+        itemPurchaseLabour_input:{
+            el:'input',
+            htmlClass:['d-none'],
+            attr:{'name':'itemPurchaseLabour','value':document.querySelector('#purchaseLabour').value}
+        },
+       /* upDel_btn:{
+            el:'button',
+            htmlClass:['btn-sm', 'btn', 'btn-secondary', 'float-end'],
+            attr:{'type':'button','onclick':'openUpDelModal()'},
+            text:'U-D'
+        }*/
 
         //ends
    };
@@ -404,6 +502,12 @@ function createTableStructure(event){
    appendElement(itemWeight_input,div2_col2_row2);
    var labourCash_input = createElement(table.labourCash_input);
    appendElement(labourCash_input,div2_col3_row2);
+   var itemWastage_input = createElement(table.itemWastage_input);
+   appendElement(itemWastage_input,div1_col1_row2);
+   var itemPurchaseLabour_input = createElement(table.itemPurchaseLabour_input);
+   appendElement(itemPurchaseLabour_input,div2_col1_row2);
+   /*var upDel_bt = createElement(table.upDel_btn);
+   appendElement(upDel_bt,div1_col2_row1); */
 
    //ends
 
@@ -470,10 +574,75 @@ function setAttribute(element, arg) {
       document.querySelector('.purchaseTable').querySelectorAll('input').forEach(e=>{
          if(e.getAttribute('name')==='fineSilver'){
               fineSilver_val = fineSilver_val+parseFloat(e.getAttribute('value'));} });
+      document.querySelector('#netFineSilver').value = fineSilver_val;        
       document.querySelector('.netFineSilver').innerHTML = fineSilver_val;
       document.querySelector('.purchaseTable').querySelectorAll('input').forEach(e=>{
         if(e.getAttribute('name')==='labourCash'){
              purchaseLabour_val = purchaseLabour_val+parseFloat(e.getAttribute('value'));} });
+       document.querySelector('#netPurchaseCash').value = purchaseLabour_val;     
       document.querySelector('.netPurchaseCash').innerHTML=purchaseLabour_val;
+  }
+
+  function editProductProcess(){
+      if(document.querySelector('.purchaseTable').children.length<2){
+          var li = document.createElement('li');
+          li.classList.add('list-group-item','list-group-item-danger','text-danger','mb-2','p-2');
+          li.appendChild(document.createTextNode('no product to edit !! '));
+          document.querySelector('.purchaseTable').appendChild(li);
+          setTimeout(()=>{
+              document.querySelector('.purchaseTable').removeChild(li);
+          },2000);
+      }else{
+          document.querySelector('.productListGroup').innerHTML = '';
+          //console.log(document.querySelector('.purchaseTable').children.length);
+          document.querySelector('.purchaseTable').querySelectorAll('select').forEach(e=>{
+            //document.querySelector('.purchaseTable').removeChild(e.parentNode.parentNode.parentNode.parentNode);
+            //console.log(e.innerHTML);
+            var parentEl= e.parentNode.parentNode.parentNode.parentNode;
+            var li={
+                el:'li',
+                htmlClass:['list-group-item', 'list-group-item-success', 'm-1','text-capitalize'],
+                attr:{},
+                text:`${parentEl.querySelector('.itemNameForm').innerHTML}-
+                        purity: ${parentEl.querySelector('.itemPurityDisplay').innerHTML}`
+            }
+            var btn = {
+                update:{
+                    el:'button',
+                    htmlClass:[ 'btn','btn-sm','btn-primary','fw-bold','float-end', 'mx-1','p-2'],
+                    attr:{'onclick':'fetchDataUpdate(event)','data-id':e.value},
+                    text:'Edit'
+                },
+                delete:{
+                    el:'button',
+                    htmlClass:['btn','btn-sm','btn-danger','mx-1','fw-bold','float-end','p-2'],
+                    attr:{},
+                    text:'Del'
+                }
+            };
+            var el = createElement(li);
+            appendElement(el,document.querySelector('.productListGroup'));
+            var delBtn = createElement(btn.delete);
+            appendElement(delBtn,el);
+            var upBtn = createElement(btn.update);
+            appendElement(upBtn,el);
+            
+          });
+          activateModal('#productListModal');
+      }
+
+  }
+
+  function fetchDataUpdate(event){
+      document.querySelector('.productListModalClose').click();//this closes the previous product list modal.
+      //console.log(event.target.dataset.id);
+      document.querySelector('.purchaseTable').querySelectorAll('select').forEach(e=>{
+          if(e.value===event.target.dataset.id){
+            document.querySelector('.purchaseTable').removeChild(e.parentNode.parentNode.parentNode.parentNode);
+          }
+      });
+      var url = `/apiPageRouter/getSelectedProduct/${event.target.dataset.id}`;
+      fetchData(url,'product');
+      activateModal('#staticBackdrop');
   }
 
