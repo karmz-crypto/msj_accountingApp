@@ -239,7 +239,7 @@ function createTableStructure(event){
         },
         div2_col1_row1:{
             el:'div',
-            htmlClass:['text-success','fw-bold'],
+            htmlClass:['text-success','fw-bold','snDisplay'],
             attr:{ },
             text: CountSN(document.querySelector('.purchaseTable'))
         },
@@ -547,12 +547,12 @@ function setAttribute(element, arg) {
 
   function CountSN(element){
       if(element.children.length===1){
-        addMoreProduct();
+        addMoreProductBtn();
       }
       return element.children.length;
   }
 
-  function addMoreProduct(){
+  function addMoreProductBtn(){
       var btn = {
         el:'button',
         htmlClass:['btn','btn-primary','btn-sm'],
@@ -616,7 +616,7 @@ function setAttribute(element, arg) {
                 delete:{
                     el:'button',
                     htmlClass:['btn','btn-sm','btn-danger','mx-1','fw-bold','float-end','p-2'],
-                    attr:{},
+                    attr:{'onclick':'deleteProduct(event)','data-id':e.value},
                     text:'Del'
                 }
             };
@@ -639,10 +639,29 @@ function setAttribute(element, arg) {
       document.querySelector('.purchaseTable').querySelectorAll('select').forEach(e=>{
           if(e.value===event.target.dataset.id){
             document.querySelector('.purchaseTable').removeChild(e.parentNode.parentNode.parentNode.parentNode);
-          }
+          };
       });
+      updateCountSN();
       var url = `/apiPageRouter/getSelectedProduct/${event.target.dataset.id}`;
       fetchData(url,'product');
       activateModal('#staticBackdrop');
+  }
+
+  function deleteProduct(event){
+    document.querySelector('.productListModalClose').click();//this closes the previous product list modal.
+    //console.log(event.target.dataset.id);
+    document.querySelector('.purchaseTable').querySelectorAll('select').forEach(e=>{
+        if(e.value===event.target.dataset.id){
+          document.querySelector('.purchaseTable').removeChild(e.parentNode.parentNode.parentNode.parentNode);
+        };
+    });
+    updateCountSN();
+  }
+
+  function updateCountSN(){
+      var i=0;
+      document.querySelectorAll('.snDisplay').forEach(e=>{
+          e.innerHTML = i++;
+      });
   }
 
