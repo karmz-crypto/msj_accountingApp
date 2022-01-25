@@ -1,0 +1,46 @@
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-1">
+            
+        </div>
+        <div class="col-10  text-capitalize mt-2 p-2 border border-secondary rounded">
+            <span class="float-start mx-1 text-success">Abacus Inc.</span>
+            <a href="/register"><span class="float-end mx-1 text-muted">Register</span></a>
+        </div>
+        <div class="col-1">
+
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-6 col-sm-0 col-xs-0 col-lg-6 col-xl-6">
+
+        </div>
+        <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="text-center shadow-sm p-3 mb-5 rounded">
+                <span class="mx-1 text-success fs-5 fw-bold ">Login</span>
+            </div>
+            
+            <div class="mt-2 rounded shadow-sm p-3 mb-5">
+                <form method="post" action="/signIn">
+                    <div class="mb-3"> 
+                        <label for="teleNum" class="form-label text-muted">Enter Your Mobile No.</label>
+                        <input type="tel" class="form-control" id="teleNum" pattern="[6-9]{1}[0-9]{9}" name="number" />
+                        <div class="form-text ">
+                            <ol class="list-group text-capitalize  mt-2">
+                                <li class="list-group-item list-group-item-warning text-secondary">ten digits</li>
+                                <li class="list-group-item-warning list-group-item text-secondary">no space & special character</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-secondary p-2">Send Code</button>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<div class="container mt-2 p-2">
+    <%if(error){%>
+        <li class="text-danger list-group-item list-group-item-danger"><%=error%></li>
+    <%}%>
+</div>

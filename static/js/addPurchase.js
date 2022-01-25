@@ -27,9 +27,7 @@ function openModal(selectUrl){ // modal for selected product
     //create a modal btn <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
  // Launch demo modal
  // </button>  and click it to launch the modal 
-    if(document.querySelector('.testBtn')){
-        document.querySelector('.test').removeChild(document.querySelector('.testBtn'));
-    }
+    
     var url;
     var id = document.querySelector('#selectProductId').value;
     var isPresent=checkIfProductExist(id);
@@ -138,6 +136,9 @@ function activateModal(target){
  // Launch demo modal
  // </button> 
  //console.log('in modal');
+ if(document.querySelector('.testBtn')){
+    document.querySelector('.test').removeChild(document.querySelector('.testBtn'));
+} //if btn exist then remove and then add a new btn ... reason to prevent multiple formation.
  var btn = document.createElement('button');
  btn.classList.add('testBtn');
  btn.setAttribute('type','button');
@@ -200,6 +201,8 @@ function createTableStructure(event){
    2. set setAttribute
    3. create a text node 
    4. append the element. */
+   // this table structure can bi used at multiple places . payment sale bullion display 
+   //so we can think abt seperating this data to a seperate file.  
    var table = {
         box1:{
             el:'div',
@@ -655,13 +658,20 @@ function setAttribute(element, arg) {
           document.querySelector('.purchaseTable').removeChild(e.parentNode.parentNode.parentNode.parentNode);
         };
     });
-    updateCountSN();
+    updateCountSN(document.querySelectorAll('.snDisplay'))
   }
 
-  function updateCountSN(){
+  function updateCountSN(element){
       var i=0;
-      document.querySelectorAll('.snDisplay').forEach(e=>{
-          e.innerHTML = i++;
+      element.forEach(e=>{
+          e.innerHTML = ++i;
       });
   }
+
+  /* pending wrks :
+    1. disable submit button untila product is added; 
+    2. display updated client data in the client data div.
+  
+*/
+// bug : the subtotal div display is not refreshed upon deletion of all the added prodct.but it wrks fine.
 

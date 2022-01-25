@@ -1,0 +1,82 @@
+<div class="container mt-2">
+    <li class="list-group-item list-group-item-light text-capitalize text-success">
+        add sales page
+    </li>
+</div>
+<div class="container mt-2">
+    <span class="text-muted"> Date : <script> document.write(new Date().toLocaleDateString('en-GB')); </script></span>
+</div>
+<form>
+    <div class="container mt-2">
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                <select class="form-select text-capitalize fw-bold" aria-label="Default select example">
+                    <option selected>select client</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+                <div class="form-text text-capitalize m-2">
+                    client not in list <a href="/addClients" class="text-decoration-none"><span class="mx-1 fw-bold">add client</span></a>
+                </div>
+                <div class="mb-2 container clientDataDiv text-capitalize text-muted border border-secondary">
+                    <div class="row">
+                        <div class="col-12">
+                            <span class="form-text"> client type: </span>
+                            <span class="clientType fw-bold text-success">retail</span>
+                            <span class="float-end mx-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-file-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"/>
+                                </svg>-Pending
+                            </span>
+                            <span class="float-end mx-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-file-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"/>
+                                </svg>-advance
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-text">fine silver status</div>
+                            <div>
+                                <span class="fineSilverSatatus text-success fw-bold mx-1">9999</span>Grms
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-text">cal.fine silver</div>
+                            <div>
+                                <span class="calFineSilver text-success fw-bold mx-1">9999</span>Grms
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-text">cash status</div>
+                            <div>
+                                <span class="cashStatus text-success fw-bold mx-1">9999</span>Rupees
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-text">cal. cash status</div>
+                            <div>
+                                <span class="calCashStatus text-success fw-bold mx-1">9999</span>Rupees
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                <select class="form-select text-capitalize fw-bold" aria-label="Default select example">
+                    <option selected>select client</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+                <div class="form-text text-capitalize">
+                    product not in list <a href="/addProduct" class="text-decoration-none"><span class="mx-1 fw-bold">add product</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

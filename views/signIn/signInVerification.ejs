@@ -1,0 +1,14 @@
+<div class="container mt-2">
+    <li class="list-group-item list-group-item-warning text-success mb-5">
+        We have sent you a verification code!
+    </li>
+
+    <li class="list-group-item list-group-item-light text-secondary mb-3">
+        Please enter the code here:
+    </li>
+    <form method="post" action="/step3">
+        <input type="hidden" name="id" value="{{id}}" />
+        <input type="text" name="token" />
+        <input type="submit" value="Check code" />
+    </form>
+</div>

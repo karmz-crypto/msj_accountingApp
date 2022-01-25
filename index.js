@@ -7,6 +7,7 @@ const port = process.env.PORT || 7000;
 const pageRouter = require('./routers/pageRouter');
 const apiPageRouter = require('./routers/apiPageRouter');
 const { checkNetworkStatus } = require('check-network-status');
+//require('dotenv').config();  //changed 23/1/22
 const app = express();
 checkNetworkStatus({
     timeout: 3000,
@@ -19,6 +20,8 @@ const db = mongoose.connection;
 db.once('open',()=>{
     console.log('db connected');
 });
+var bodyParser = require('body-parser'); //changed 23/1/22
+app.use(bodyParser.urlencoded({ extended : true })); //changed 23/1/22
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.set('view engine','ejs');
