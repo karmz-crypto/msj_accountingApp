@@ -556,9 +556,12 @@ function setAttribute(element, arg) {
   }
 
   function addMoreProductBtn(){
+      if(document.querySelector('.addMoreProductBtn')){
+          return;
+      }
       var btn = {
         el:'button',
-        htmlClass:['btn','btn-primary','btn-sm'],
+        htmlClass:['btn','btn-primary','btn-sm','addMoreProductBtn'],
         attr:{'onclick':'focusSelectProduct()','type':'button'},
         text:'Add More Product'
       }
@@ -644,7 +647,7 @@ function setAttribute(element, arg) {
             document.querySelector('.purchaseTable').removeChild(e.parentNode.parentNode.parentNode.parentNode);
           };
       });
-      updateCountSN();
+      updateCountSN(document.querySelectorAll('.snDisplay'));
       var url = `/apiPageRouter/getSelectedProduct/${event.target.dataset.id}`;
       fetchData(url,'product');
       activateModal('#staticBackdrop');
@@ -658,12 +661,12 @@ function setAttribute(element, arg) {
           document.querySelector('.purchaseTable').removeChild(e.parentNode.parentNode.parentNode.parentNode);
         };
     });
-    updateCountSN(document.querySelectorAll('.snDisplay'))
+    updateCountSN(document.querySelectorAll('.snDisplay'));
   }
 
   function updateCountSN(element){
       var i=0;
-      element.forEach(e=>{
+      element.forEach(e=>{ 
           e.innerHTML = ++i;
       });
   }
