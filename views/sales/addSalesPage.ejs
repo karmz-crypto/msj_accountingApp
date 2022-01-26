@@ -10,20 +10,18 @@
     <div class="container mt-2">
         <div class="row">
             <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                <select class="form-select text-capitalize fw-bold" aria-label="Default select example">
-                    <option selected>select client</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                <select class="form-select text-capitalize fw-bold selectClient" aria-label="Default select example" onchange="client.setClientId(event)">
+                    <option value="0" selected>select client</option>
+                    <%clientData.forEach(e=>{ %>
+                        <option value="<%=e._id%>"><%=e.nameOfClient%></option>
+                    <%})%>
                 </select>
                 <div class="form-text text-capitalize m-2">
                     client not in list <a href="/addClients" class="text-decoration-none"><span class="mx-1 fw-bold">add client</span></a>
                 </div>
-                <div class="mb-2 container clientDataDiv text-capitalize text-muted border border-secondary">
+                <div class="mb-2 container clientDataDiv text-capitalize text-muted border border-secondary d-none">
                     <div class="row">
-                        <div class="col-12">
-                            <span class="form-text"> client type: </span>
-                            <span class="clientType fw-bold text-success">retail</span>
+                        <div class="col-12 mb-1">
                             <span class="float-end mx-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-file-fill" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M4 0h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"/>
@@ -35,32 +33,36 @@
                                 </svg>-advance
                             </span>
                         </div>
+                        <div class="col-12 mb-1 p-1">
+                            <span class="form-text"> client type : </span>
+                            <span class="clientType fw-bold text-success mx-1">retail</span>
+                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col-6">
+                    <div class="row ">
+                        <div class="col-6 mt-1">
                             <div class="form-text">fine silver status</div>
                             <div>
-                                <span class="fineSilverSatatus text-success fw-bold mx-1">9999</span>Grms
+                                <span class="fineSilverStatus text-success fw-bold mx-1">9999</span>Grms
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 mt-1">
                             <div class="form-text">cal.fine silver</div>
                             <div>
-                                <span class="calFineSilver text-success fw-bold mx-1">9999</span>Grms
+                                <span class="calFineSilver text-success fw-bold mx-1">0</span>Grms
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-6 mt-1">
                             <div class="form-text">cash status</div>
                             <div>
                                 <span class="cashStatus text-success fw-bold mx-1">9999</span>Rupees
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 mt-1 mb-2">
                             <div class="form-text">cal. cash status</div>
                             <div>
-                                <span class="calCashStatus text-success fw-bold mx-1">9999</span>Rupees
+                                <span class="calCashStatus text-success fw-bold mx-1">0</span>Rupees
                             </div>
                         </div>
                     </div>
@@ -68,15 +70,135 @@
             </div>
             <div class="col-12 col-md-6 col-lg-6 col-xl-6">
                 <select class="form-select text-capitalize fw-bold" aria-label="Default select example">
-                    <option selected>select client</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    <option selected>select product</option>
+                    <%productData.forEach(e=>{ %>
+                        <option value="<%=e._id%>"> <%=e.itemName%> || <%=e.itemPurity%></option>
+                    <%})%>
                 </select>
-                <div class="form-text text-capitalize">
+                <div class="form-text text-capitalize m-2">
                     product not in list <a href="/addProduct" class="text-decoration-none"><span class="mx-1 fw-bold">add product</span></a>
                 </div>
             </div>
         </div>
+        <div class="col-12 mt-2 salesTable">
+            <li class="list-group-item-warning list-group-item text-capitalize fw-bold">
+                sales list item
+                <span class="float-end fw-bold">e d i t !</span>
+            </li>
+        </div>
+        <div class="col-12 mt-2 mb-2 saleSubTotal">
+            <div class="container border border-secondary">
+                <div class="row">
+                    <div class="col-6 border-end border-secondary">
+                        <div class="text-muted form-text">
+                            Net Fine Silver.
+                        </div>
+                        <div class="text-muted form-text">
+                            <input class="d-none" name="netFineSilver">
+                            <span class="mx-1 fw-bold text-success netFineSilver">99999</span>.Grms
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="text-muted form-text">
+                            Net Sale Cash.
+                        </div>
+                        <div class="text-muted form-text">
+                            <input class="d-none" name="netSaleCash">
+                            <span class="mx-1 fw-bold text-success netSaleCash">99999</span>.Grms
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 m-2">
+            <button class="btn btn-sm btn-primary" type="button">Add More Product</button>
+        </div>
+        <div class="m-2 float-end">
+            <button class="btn btn-sm btn-primary submitBtn" type="submit">Submit Sales</button>
+        </div>
     </div>
 </form>
+
+<div class="d-none modalBtn"></div><!--modal btn append-->
+
+<!--product modal -->
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#saleProductModal">
+    Launch static backdrop modal
+</button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="saleProductModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="saleProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="saleProductModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body container text-capitalize text-muted mb-2">
+          <div class="row">
+              <div class="col-6">
+                <span class="form-text">item purity</span>
+                <span class="text-success fw-bold mx-2">99</span>
+              </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12">
+                <label for="itemWeight" class="form-label">item weight</label>
+                <input class="form-control" id="itemWeight" name="itemWeight" type="number" step="any">
+                <div class="form-text text-success">weight in grams.</div>
+            </div>
+          </div>
+          <div class="mt-2 row border-bottom border-secondary rounded mb-2">
+              <div class="col-7">
+                <div class="form-text saleWastage_display mb-2">
+                    item sale wastage <span class="text-success mx-1 fw-bold">5</span>%
+                </div>
+                <div class="saleWastage_input d-none mb-2">
+                    <label for="saleWastage" class="form-label">sale wastage</label>
+                    <input class="form-control" name="saleWastage" id="saleWastage" type="number" step="any">
+                </div>
+                <div class="form-text saleLabour_display mb-2">
+                    item sale labour <span class="text-success mx-1 fw-bold">10000</span>Rs
+                </div>
+                <div class="saleLabour_input mb-2 d-none">
+                    <label class="form-label" for="saleLabour">sale labour</label>
+                    <input class="form-control" name="saleLabour" id="saleLabour" type="number" step="any">
+                </div>
+              </div>
+              <div class="col-5 border-start border-secondary rounded">
+                  <div>
+                      <div>
+                          net f.silver
+                      </div>
+                      <div class="mb-2">
+                        <span class="text-success fw-bold">9999</span>. grms
+                      </div>
+                      <div>
+                          net cash
+                      </div>
+                      <div>
+                          <span class="text-success fw-bold">10000</span>. rs
+                      </div>
+                  </div>
+
+              </div>
+          </div>
+          <div class="col-12 form-text ">
+            
+                <span class="text-success mx-2">Change Wastage</span>
+            
+            
+                <span class="text-success mx-2">Change Labour</span>
+            
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-sm">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<script type="text/javascript" src="/addSalesPage.js"></script>
