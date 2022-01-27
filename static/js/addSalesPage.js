@@ -69,10 +69,6 @@ var productModal ={
     modalId:'',
     itemWeight:0,
     calInStock:0,
-    /*deleteModalBtn:function(){
-        
-    },
-    createModalBtn:function(){},*/
     setModalDataVariables:function(data){
         console.log(data);
         this.itemPurity = data.itemPurity;
@@ -85,15 +81,19 @@ var productModal ={
     },
     insertDataInModal:function(){
         //console.log(this.modalId);
-        document.querySelector('.modal-title').innerHTML = this.itemName;
-        document.querySelector('.itemPurity').innerHTML = this.itemPurity;
-        document.querySelector('.inStock').innerHTML = this.inStock;
-        document.querySelector('#saleWastage').value = this.saleWastage;
-        document.querySelector('.saleWastage_display').innerHTML = document.querySelector('#saleWastage').value;
-        document.querySelector('#saleLabour').value = this.saleLabourMax;
-        document.querySelector('.saleLabour_display').innerHTML= document.querySelector('#saleLabour').value;
-        this.openProductModal();
-        
+        if(this.inStock===0){
+            var msg=`the stock quantity of the item is ${this.inStock}. (Zero)`; 
+            warningModal.setWarningMsg(msg);
+        }else{
+            document.querySelector('.modal-title').innerHTML = this.itemName;
+            document.querySelector('.itemPurity').innerHTML = this.itemPurity;
+            document.querySelector('.inStock').innerHTML = this.inStock;
+            document.querySelector('#saleWastage').value = this.saleWastage;
+            document.querySelector('.saleWastage_display').innerHTML = document.querySelector('#saleWastage').value;
+            document.querySelector('#saleLabour').value = this.saleLabourMax;
+            document.querySelector('.saleLabour_display').innerHTML= document.querySelector('#saleLabour').value;
+            this.openProductModal();
+        }
     },
     fetchProductData:function(){ 
         let url = `/apiPageRouter/getSelectedProduct/${this.productId}`;
@@ -119,28 +119,78 @@ var productModal ={
         //console.log(btn);
         btn.click();
     },
-    initializeModal:function(){ console.log(this.netFineSilver);
+    initializeModal:function(){ //console.log(this.netFineSilver);
         document.querySelector('#itemWeight').value = 0;
         document.querySelector('.calInStock').innerHTML = this.calInStock;
         document.querySelector('#netFineSilverModal-input').value = this.netFineSilver;
         document.querySelector('.netFineSilverModal').innerHTML= document.querySelector('#netFineSilverModal-input').value ;
         document.querySelector('#netCashModal-input').value = this.netSaleCash;
         document.querySelector('.netCashModal').innerHTML = document.querySelector('#netCashModal-input').value;
+        document.querySelector('.itemWeightErrorMsg').innerHTML = '';
     },
-    editWastage:function(){},
-    editLabour:function(){},
+    editWastage:function(event){
+        //console.log(event.target.tagName);
+        if(event.target.tagName ==='SPAN'){
+            document.querySelector('.saleWastage_displayDiv').classList.add('d-none');
+            document.querySelector('.saleWastage_input').classList.remove('d-none');
+        }else{
+            document.querySelector('.saleWastage_displayDiv').classList.remove('d-none');
+            document.querySelector('.saleWastage_input').classList.add('d-none');
+            document.querySelector('.saleWastage_display').innerHTML = document.querySelector('#saleWastage').value;
+            this.saleWastage = document.querySelector('#saleWastage').value;
+            this.calculateNetFineSilver();
+        }
+    },
+    editLabour:function(event){
+        console.log(event.target.tagName);
+        if(event.target.tagName ==='SPAN'){
+            document.querySelector('.saleLabour_displayDiv').classList.add('d-none');
+            document.querySelector('.saleLabour_input').classList.remove('d-none');
+        }else{
+            document.querySelector('.saleLabour_displayDiv').classList.remove('d-none');
+            document.querySelector('.saleLabour_input').classList.add('d-none');
+            document.querySelector('.saleLabour_display').innerHTML = document.querySelector('#saleLabour').value;
+            this.saleLabourMax = document.querySelector('#saleLabour').value;
+            this.calculateNetSaleCash();
+        }  
+    },
     calculateNetFineSilver:function(){
         document.querySelector('#netFineSilverModal-input').value = parseFloat(this.itemWeight)*(parseFloat(this.itemPurity)+parseFloat(this.saleWastage))/100;
-        document.querySelector('.netFineSilverModal').innerHTML = document.querySelector('#netFineSilverModal-input').value;
-        this.calculateNetSaleCash();
+        document.querySelector('.netFineSilverModal').innerHTML = document.querySelector('#netFineSilverModal-input').value;  
     },
     calculateNetSaleCash:function(){
-        
+        document.querySelector('#netCashModal-input').value = parseFloat(this.itemWeight)*parseFloat(this.saleLabourMax)/1000;
+        document.querySelector('.netCashModal').innerHTML = document.querySelector('#netCashModal-input').value;
     },
-    calculateStock:function(event){
-        this.itemWeight = event.target.value;
+    calculateStock:function(){       
         document.querySelector('.calInStock').innerHTML = parseFloat(this.inStock)-parseFloat(this.itemWeight);
         this.calculateNetFineSilver();
+        this.calculateNetSaleCash();
+    },
+    itemWeightControl:function(event){
+        this.itemWeight = event.target.value;
+        if(parseFloat(this.inStock)-parseFloat(this.itemWeight)<0){
+            document.querySelector('.itemWeightErrorMsg').innerHTML =`max weight allowed ${this.inStock}`;
+            document.querySelector('.saveChangesBtn').setAttribute('disabled','true');
+            return;
+        }else if(parseFloat(this.itemWeight)<=0){
+            document.querySelector('.itemWeightErrorMsg').innerHTML =`weight cannot be 0 or less than 0`;
+            document.querySelector('.saveChangesBtn').setAttribute('disabled','true');
+            return;
+        }
+        else if(document.querySelector('#itemWeight').value===''){
+            document.querySelector('.itemWeightErrorMsg').innerHTML =`please enter a valid number`;
+            document.querySelector('.saveChangesBtn').setAttribute('disabled','true');
+            return;
+        }
+        else{
+            if(document.querySelector('.saveChangesBtn').getAttribute('disabled')){
+                document.querySelector('.saveChangesBtn').removeAttribute('disabled');
+                document.querySelector('.itemWeightErrorMsg').innerHTML ='';
+            }
+            this.calculateStock();
+        }
+
     },
     transferModalData:function(){}
 
@@ -148,8 +198,21 @@ var productModal ={
 
 var warningModal = {
     warningMsg:'',
+    modalId:'#warningModal',
     setWarningMsg:function(warningMsg){
         this.warningMsg = warningMsg;
+        this.insertMsg();
+    },
+    insertMsg:function(){
+        document.querySelector('.warning-modal-body').innerHTML = this.warningMsg;
+        this.openModal();
+    },
+    openModal:function(){
+        var btn = genericBtn()
+            btn.removeAttribute('data-bs-target');
+            btn.setAttribute('data-bs-target',this.modalId);
+            //console.log(btn);
+            btn.click();
     }
 }
 
