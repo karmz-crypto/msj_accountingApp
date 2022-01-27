@@ -132,8 +132,11 @@ var productModal ={
     calculateNetFineSilver:function(){
         document.querySelector('#netFineSilverModal-input').value = parseFloat(this.itemWeight)*(parseFloat(this.itemPurity)+parseFloat(this.saleWastage))/100;
         document.querySelector('.netFineSilverModal').innerHTML = document.querySelector('#netFineSilverModal-input').value;
+        this.calculateNetSaleCash();
     },
-    calculateNetSaleCash:function(){},
+    calculateNetSaleCash:function(){
+        
+    },
     calculateStock:function(event){
         this.itemWeight = event.target.value;
         document.querySelector('.calInStock').innerHTML = parseFloat(this.inStock)-parseFloat(this.itemWeight);
