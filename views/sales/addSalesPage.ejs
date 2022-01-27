@@ -69,7 +69,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                <select class="form-select text-capitalize fw-bold" aria-label="Default select example">
+                <select class="form-select text-capitalize fw-bold" aria-label="Default select example" onchange="productModal.isProductUnique(event,'#saleProductModal')">
                     <option selected>select product</option>
                     <%productData.forEach(e=>{ %>
                         <option value="<%=e._id%>"> <%=e.itemName%> || <%=e.itemPurity%></option>
@@ -93,7 +93,7 @@
                         <div class="text-muted form-text">
                             Net Fine Silver.
                         </div>
-                        <div class="text-muted form-text">
+                        <div>
                             <input class="d-none" name="netFineSilver">
                             <span class="mx-1 fw-bold text-success netFineSilver">99999</span>.Grms
                         </div>
@@ -102,7 +102,7 @@
                         <div class="text-muted form-text">
                             Net Sale Cash.
                         </div>
-                        <div class="text-muted form-text">
+                        <div>
                             <input class="d-none" name="netSaleCash">
                             <span class="mx-1 fw-bold text-success netSaleCash">99999</span>.Grms
                         </div>
@@ -123,9 +123,9 @@
 
 <!--product modal -->
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#saleProductModal">
+<!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#saleProductModal">
     Launch static backdrop modal
-</button>
+</button>-->
   
   <!-- Modal -->
   <div class="modal fade" id="saleProductModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="saleProductModalLabel" aria-hidden="true">
@@ -137,29 +137,39 @@
         </div>
         <div class="modal-body container text-capitalize text-muted mb-2">
           <div class="row">
-              <div class="col-6">
+              <div class="col-4">
                 <span class="form-text">item purity</span>
-                <span class="text-success fw-bold mx-2">99</span>
+                <span class="text-success itemPurity fw-bold mx-2">99</span>
+              </div>
+              <div class="col-8 text-muted">
+                <div>
+                    <span class="form-text">In Stock :</span>
+                    <span class="text-success inStock fw-bold mx-1">99999</span>. Grms
+                </div>
+                <div class="text-muted">
+                    <span class="form-text">Cal.Stock :</span>
+                    <span class="text-success fw-bold mx-1 calInStock">0</span>. Grms
+                </div>
               </div>
           </div>
           <div class="row mt-2">
             <div class="col-12">
                 <label for="itemWeight" class="form-label">item weight</label>
-                <input class="form-control" id="itemWeight" name="itemWeight" type="number" step="any">
+                <input class="form-control" id="itemWeight" name="itemWeight" type="number" step="any" value=0 onfocusout="productModal.calculateStock(event)">
                 <div class="form-text text-success">weight in grams.</div>
             </div>
           </div>
           <div class="mt-2 row border-bottom border-secondary rounded mb-2">
               <div class="col-7">
-                <div class="form-text saleWastage_display mb-2">
-                    item sale wastage <span class="text-success mx-1 fw-bold">5</span>%
+                <div class="form-text saleWastage_displayDiv mb-2">
+                    item sale wastage <span class="text-success mx-1 saleWastage_display fw-bold">5</span>%
                 </div>
                 <div class="saleWastage_input d-none mb-2">
                     <label for="saleWastage" class="form-label">sale wastage</label>
                     <input class="form-control" name="saleWastage" id="saleWastage" type="number" step="any">
                 </div>
-                <div class="form-text saleLabour_display mb-2">
-                    item sale labour <span class="text-success mx-1 fw-bold">10000</span>Rs
+                <div class="form-text saleLabour_displayDiv mb-2">
+                    item sale labour <span class="text-success saleLabour_display mx-1 fw-bold">10000</span>Rs
                 </div>
                 <div class="saleLabour_input mb-2 d-none">
                     <label class="form-label" for="saleLabour">sale labour</label>
@@ -172,25 +182,22 @@
                           net f.silver
                       </div>
                       <div class="mb-2">
-                        <span class="text-success fw-bold">9999</span>. grms
+                        <input class="d-none" name="netFineSilverModal-input" id="netFineSilverModal-input">
+                        <span class="text-success netFineSilverModal fw-bold">9999</span>. grms
                       </div>
                       <div>
                           net cash
                       </div>
                       <div>
-                          <span class="text-success fw-bold">10000</span>. rs
+                          <input class="d-none" name="netCashModal-input" id="netCashModal-input">
+                          <span class="text-success netCashModal fw-bold">10000</span>. rs
                       </div>
                   </div>
-
               </div>
           </div>
           <div class="col-12 form-text ">
-            
                 <span class="text-success mx-2">Change Wastage</span>
-            
-            
                 <span class="text-success mx-2">Change Labour</span>
-            
           </div>
         </div>
         <div class="modal-footer">
