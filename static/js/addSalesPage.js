@@ -122,7 +122,7 @@ var productModal ={
         //console.log(this.modalId);
         if(this.inStock===0){
             var msg=`the stock quantity of the item is ${this.inStock}. (Zero)`; 
-            warningModal.setWarningMsg(msg);
+            warningModal.setWarningMsg(msg,'reminder');
         }else{
             document.querySelector('.modal-title').innerHTML = this.itemName;
             document.querySelector('.itemPurity').innerHTML = this.itemPurity;
@@ -139,15 +139,26 @@ var productModal ={
         fetchData(url,'product');
     },
     isProductUnique:function(event,modalId){ //console.log('here');
+        var isPresent =false;
         this.productId = event.target.value;
+        //console.log(`product selected${this.productId}`);
         this.modalId = modalId;
-        document.querySelector('.salesTable').querySelectorAll('select').forEach(e=>{  //console.log('here2')
+        document.querySelector('.salesTable').querySelectorAll('select').forEach(e=>{  
             //select is only for the product id
+            //console.log(`product present in list ${e.value}`);
             if(e.value===this.productId){
                 //open a warning modal & return
+                isPresent = !isPresent
+                var msg=` the item is present in the list`; 
+            warningModal.setWarningMsg(msg,'');
+                
             }
             
-        });this.fetchProductData();
+        });
+        if(!isPresent){
+            this.fetchProductData();
+        }
+        
     },
     openProductModal:function(){
         //this.inserDataInModal();
@@ -159,6 +170,7 @@ var productModal ={
         btn.click();
     },
     initializeModal:function(){ //console.log(this.netFineSilver);
+        document.querySelector('.saveChangesBtn').setAttribute('disabled','true');
         this.calInStock = 0;
         this.netFineSilver = 0;
         this.netSaleCash = 0;
@@ -289,11 +301,19 @@ function subTotal(){
 var warningModal = {
     warningMsg:'',
     modalId:'#warningModal',
-    setWarningMsg:function(warningMsg){
+    reminderMsg:'', // this is either '' or 'reminder' --> if 'reminder' then reminder is present in the warning modal
+    //else its not present we hide the display of reminder click ....
+    setWarningMsg:function(warningMsg,reminderMsg){
         this.warningMsg = warningMsg;
+        this.reminderMsg = reminderMsg;
         this.insertMsg();
     },
     insertMsg:function(){
+        if(this.reminderMsg===''){
+            document.querySelector('.reminderWarningModal').classList.add('d-none');
+        }else{
+            document.querySelector('.reminderWarningModal').classList.remove('d-none');
+        }
         document.querySelector('.warning-modal-body').innerHTML = this.warningMsg;
         this.openModal();
     },
