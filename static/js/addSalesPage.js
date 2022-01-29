@@ -1,8 +1,5 @@
-//const { json } = require("express/lib/response");
-
 window.onload = ()=>{
     console.log('sales connected');
-   // genericBtn();
 };
 
 class salesProductList {
@@ -17,21 +14,9 @@ class salesProductList {
         this.fineSilver = fineSilver;
         this.labourCash = labourCash;
     };
-    createTable(){
-       //empty function
-    };
     insertInputDataToTable(){ 
-        console.log(this.SN);
         salesTableStructure(this);
         this.addProductToList();
-        //console.log(this.fineSilver);
-        //document.querySelector('.itemName-table-display').innerHTML = this.itemName;
-        //document.querySelector('.itemPurity-table-display').innerHTML = this.itemPurity;
-        //document.querySelector('.saleWastage-table-display').innerHTML = this.saleWastage;
-        //document.querySelector('.saleLabour-table-display').innerHTML = this.saleLabour;
-        //document.querySelector('.itemWeight-table-display').innerHTML = this.itemWeight;
-        //document.querySelector('.fineSilver-table-display').innerHTML = this.fineSilver;
-        //console.log(document.querySelector('.itemPurity-table-display'));
     };
     addProductToList(){
         subTotal();
@@ -84,16 +69,6 @@ var client = {
         fetchData(url,'client');
     }
 };
-
-/*function processClient(event){
-    var clientId=event.target.value;
-    client.clientId = clientId;
-    client.onSelectClient();
-}*/
-var product ={
-
-};
-
 var productModal ={
     productId:'',
     itemPurity:0,
@@ -119,7 +94,6 @@ var productModal ={
         this.insertDataInModal();
     },
     insertDataInModal:function(){
-        //console.log(this.modalId);
         if(this.inStock===0){
             var msg=`the stock quantity of the item is ${this.inStock}. (Zero)`; 
             warningModal.setWarningMsg(msg,'reminder');
@@ -138,38 +112,31 @@ var productModal ={
         let url = `/apiPageRouter/getSelectedProduct/${this.productId}`;
         fetchData(url,'product');
     },
-    isProductUnique:function(event,modalId){ //console.log('here');
+    isProductUnique:function(event,modalId){
         var isPresent =false;
         this.productId = event.target.value;
-        //console.log(`product selected${this.productId}`);
         this.modalId = modalId;
         document.querySelector('.salesTable').querySelectorAll('select').forEach(e=>{  
             //select is only for the product id
-            //console.log(`product present in list ${e.value}`);
             if(e.value===this.productId){
                 //open a warning modal & return
                 isPresent = !isPresent
                 var msg=` the item is present in the list`; 
-            warningModal.setWarningMsg(msg,'');
-                
-            }
-            
+            warningModal.setWarningMsg(msg,'');   
+            }   
         });
         if(!isPresent){
             this.fetchProductData();
-        }
-        
+        }    
     },
     openProductModal:function(){
-        //this.inserDataInModal();
         this.initializeModal();
         var btn = genericBtn()
         btn.removeAttribute('data-bs-target');
         btn.setAttribute('data-bs-target',this.modalId);
-        //console.log(btn);
         btn.click();
     },
-    initializeModal:function(){ //console.log(this.netFineSilver);
+    initializeModal:function(){ 
         document.querySelector('.saveChangesBtn').setAttribute('disabled','true');
         this.calInStock = 0;
         this.netFineSilver = 0;
@@ -229,8 +196,6 @@ var productModal ={
         }else{
             document.querySelector('.zeroStockReminder').classList.add('d-none');
         }
-        //this.initTableFormation();
-        //this.transferModalData();//recent chng
     },
     itemWeightControl:function(event){
         this.itemWeight = event.target.value;
@@ -284,18 +249,17 @@ function countSN(){ //since the table struct is created before the call to SN() 
 function subTotal(){
     var netFineSilver = 0;
     var netSaleCash = 0;
-       document.querySelectorAll('input').forEach(e=>{
-        if(e.getAttribute('name')==='fineSilver'){
-            netFineSilver = netFineSilver+ parseFloat(e.value);
-        }else if(e.getAttribute('name') ==='labourCash'){
-            netSaleCash = netSaleCash+ parseFloat(e.value);
-        }
+    Array.from(document.querySelectorAll('input')).filter(el=>el.getAttribute('name')==='fineSilver').forEach(e=>{
+        netFineSilver = netFineSilver+parseFloat(e.value);
     });
+    Array.from(document.querySelectorAll('input')).filter(el=>el.getAttribute('name')==='labourCash').forEach(e=>{
+        netSaleCash =netSaleCash+parseFloat(e.value);
+    });
+    console.log(netSaleCash,netFineSilver);
     document.querySelector('#netFineSilver').value = netFineSilver;
     document.querySelector('.netFineSilver').innerHTML = document.querySelector('#netFineSilver').value;
     document.querySelector('#netSaleCash').value = netSaleCash;
     document.querySelector('.netSaleCash').innerHTML = document.querySelector('#netSaleCash').value ;
-
 }
 
 var warningModal = {
@@ -321,7 +285,6 @@ var warningModal = {
         var btn = genericBtn()
             btn.removeAttribute('data-bs-target');
             btn.setAttribute('data-bs-target',this.modalId);
-            //console.log(btn);
             btn.click();
     }
 }
