@@ -537,7 +537,7 @@ function salesTableStructure(productDetail)  {
         var row1_col3_div1 = createElement(table.col4_div);
         appendElement(row1_col3_div1,row1_col3);
         //row1_col3_div1_span_display
-        setText(table.span_text,'purity.');
+        setText(table.span_text,'item purity.');
         var row1_col3_div1_span_display = createElement(table.span_text);
         appendElement(row1_col3_div1_span_display,row1_col3_div1);
         //row1_col3_div2
@@ -564,7 +564,7 @@ function salesTableStructure(productDetail)  {
         var row2_col1_div1 = createElement(table.col12_div);
         appendElement(row2_col1_div1,row2_col1);
         //row2_col1_div1_span_text
-        setText(table.span_text,'s.wastage ');
+        setText(table.span_text,'sale wastage ');
         var row2_col1_div1_span_text = createElement(table.span_text);
         appendElement(row2_col1_div1_span_text,row2_col1_div1);
         //row2_col1_div1_span_value
@@ -581,7 +581,7 @@ function salesTableStructure(productDetail)  {
         var row2_col1_div2 = createElement(table.col12_div);
         appendElement(row2_col1_div2,row2_col1);
         //row2_col1_div2_span_text
-        setText(table.span_text,'S.labour ');
+        setText(table.span_text,'Sale labour ');
         var row2_col1_div2_span_text = createElement(table.span_text);
         appendElement(row2_col1_div2_span_text,row2_col1_div2);
         //row2_col1_div2_span_value
@@ -624,7 +624,7 @@ function salesTableStructure(productDetail)  {
         var row2_col3_div1 = createElement(table.col12_div);
         appendElement(row2_col3_div1,row2_col3);
         //row2_col3_div1_span_text
-        setText(table.span_text,'F.Silver ');
+        setText(table.span_text,'Fine Silver ');
         var row2_col3_div1_span_text = createElement(table.span_text);
         appendElement(row2_col3_div1_span_text,row2_col3_div1);
         //row2_col3_div1_span_value
@@ -641,7 +641,7 @@ function salesTableStructure(productDetail)  {
         var row2_col3_div2 = createElement(table.col12_div);
         appendElement(row2_col3_div2,row2_col3);
         //row2_col3_div2_span_text
-        setText(table.span_text,'l.cash ');
+        setText(table.span_text,'labour cash ');
         var row2_col3_div2_span_text = createElement(table.span_text);
         appendElement(row2_col3_div2_span_text,row2_col3_div2);
         //row2_col3_div2_span_value
