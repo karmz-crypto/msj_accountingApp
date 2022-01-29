@@ -24,3 +24,7 @@ exports.addSalesPage = (req,res)=>{
     ).catch();
     
 };
+
+exports.addSales = (req,res)=>{
+    console.log(req.body);
+};

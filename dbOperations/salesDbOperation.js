@@ -1,0 +1,4 @@
+
+function addSalesToDatabase(res){
+
+}

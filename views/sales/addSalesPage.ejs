@@ -6,7 +6,7 @@
 <div class="container mt-2">
     <span class="text-muted"> Date : <script> document.write(new Date().toLocaleDateString('en-GB')); </script></span>
 </div>
-<form>
+<form method="post" action="/addSales">
     <div class="container mt-2">
         <div class="row">
             <div class="col-12 col-md-6 col-lg-6 col-xl-6">
@@ -93,8 +93,8 @@
                         <div class="text-muted form-text">
                             Net Fine Silver.
                         </div>
-                        <div>
-                            <input class="d-none" name="netFineSilver">
+                        <div class="text-muted">
+                            <input class="d-none" name="netFineSilver" id="netFineSilver">
                             <span class="mx-1 fw-bold text-success netFineSilver">99999</span>.Grms
                         </div>
                     </div>
@@ -102,9 +102,9 @@
                         <div class="text-muted form-text">
                             Net Sale Cash.
                         </div>
-                        <div>
-                            <input class="d-none" name="netSaleCash">
-                            <span class="mx-1 fw-bold text-success netSaleCash">99999</span>.Grms
+                        <div class="text-muted">
+                            <input class="d-none" name="netSaleCash" id="netSaleCash">
+                            <span class="mx-1 fw-bold text-success netSaleCash">99999</span>.Rs
                         </div>
                     </div>
                 </div>
@@ -152,6 +152,11 @@
                     <span class="text-success fw-bold mx-1 calInStock">0</span>. Grms
                 </div>
               </div>
+          </div>
+          <div class="col-12 mb-1 mt-2 d-none zeroStockReminder text-muted text-capitalize form-text">
+            <li class="list-group-item list-group-item-light">
+                Stock is 0 (Zero) <span class="text-success mx-2 float-end">Set Reminder</span>
+            </li>
           </div>
           <div class="row mt-2">
             <div class="col-12">
@@ -203,7 +208,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary btn-sm saveChangesBtn">Save Changes</button>
+          <button type="button" class="btn btn-primary btn-sm saveChangesBtn" onclick="productModal.transferModalData()" data-bs-dismiss="modal">Save Changes</button>
         </div>
       </div>
     </div>

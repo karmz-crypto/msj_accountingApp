@@ -50,4 +50,7 @@ api.post('/:id/addProduct',productController.addProduct);
     //3. purchasse post calls 
 api.post('/addPurchase',purchaseController.addPurchase);
 
+    //sales post calls
+api.post('/addSales',salesController.addSales);
+
 module.exports = api;
