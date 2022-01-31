@@ -114,7 +114,21 @@ var productModal ={
     },
     isProductUnique:function(event,modalId){
         var isPresent =false;
-        this.productId = event.target.value;
+        //this.productId = event.target.value;
+        if(event.target.value===""){ //this block of if : is for updating the product list by onclick of edit of product 
+            this.productId = event.target.dataset.id;
+            document.querySelector('.salesTable').querySelectorAll('select').forEach(e=>{
+                if(e.value===event.target.dataset.id){
+                  document.querySelector('.salesTable').removeChild(e.parentNode.parentNode.parentNode.parentNode);
+                };
+            });
+            document.querySelector('.productListModalClose').click();//this closes the previous product list modal.
+            updateCountSN(document.querySelectorAll('.snDisplay'));
+            subTotal();
+        }
+        else{ // this is original fetch of product details via onchange of product
+            this.productId=event.target.value;
+        }
         this.modalId = modalId;
         document.querySelector('.salesTable').querySelectorAll('select').forEach(e=>{  
             //select is only for the product id
@@ -220,12 +234,6 @@ var productModal ={
             }
             this.calculateStock();
         }
-
-        
-
-    },
-    initTableFormation:function(){
-        //salesTableStructure(); //
     },
     transferModalData:function(){
         let productDetail = new salesProductList(
@@ -233,11 +241,7 @@ var productModal ={
             this.netFineSilver,this.netSaleCash
         );
         productDetail.insertInputDataToTable();
-        //console.log('check'); //omit
-
-
     }
-
 };
 
 function countSN(){ //since the table struct is created before the call to SN() therefore it gives and added length
@@ -465,6 +469,7 @@ function salesTableStructure(productDetail)  {
         var row1_col1_div2 = createElement(table.col12_div);
         appendElement(row1_col1_div2,row1_col1);
         //row1_col1_div2_span_display
+        setHtmlClass(table.span_value,'snDisplay')
         setText(table.span_value,productDetail.SN);
         var row1_col1_div2_span_display = createElement(table.span_value);
         appendElement(row1_col1_div2_span_display,row1_col1_div2);
@@ -655,6 +660,85 @@ function salesTableStructure(productDetail)  {
     function setText(element,text){
         element.text = text;
     }
+
+    //edit product
+
+    function editProductProcess(){
+        if(document.querySelector('.salesTable').children.length<2){
+            var li = document.createElement('li');
+            li.classList.add('list-group-item','list-group-item-danger','text-danger','mb-2','p-2');
+            li.appendChild(document.createTextNode('no product to edit !! '));
+            document.querySelector('.salesTable').appendChild(li);
+            setTimeout(()=>{
+                document.querySelector('.salesTable').removeChild(li);
+            },2000);
+        }else{
+            document.querySelector('.productListGroup').innerHTML = '';
+            //console.log(document.querySelector('.purchaseTable').children.length);
+            document.querySelector('.salesTable').querySelectorAll('select').forEach(e=>{
+              //document.querySelector('.purchaseTable').removeChild(e.parentNode.parentNode.parentNode.parentNode);
+              //console.log(e.innerHTML);
+              var parentEl= e.parentNode.parentNode.parentNode.parentNode;
+              var li={
+                  el:'li',
+                  htmlClass:['list-group-item', 'list-group-item-success', 'm-1','text-capitalize'],
+                  attr:{},
+                  text:`${parentEl.querySelector('.itemName-table-display').innerHTML}-
+                          purity: ${parentEl.querySelector('.itemPurity-table-display').innerHTML}`
+              }
+              var btn = {
+                  update:{
+                      el:'button',
+                      htmlClass:[ 'btn','btn-sm','btn-primary','fw-bold','float-end', 'mx-1','p-2'],
+                      attr:{'onclick':"productModal.isProductUnique(event,'#saleProductModal')",'data-id':e.value},
+                      text:'Edit'
+                  },
+                  delete:{
+                      el:'button',
+                      htmlClass:['btn','btn-sm','btn-danger','mx-1','fw-bold','float-end','p-2'],
+                      attr:{'onclick':'deleteProduct(event)','data-id':e.value},
+                      text:'Del'
+                  }
+              };
+              var el = createElement(li);
+              appendElement(el,document.querySelector('.productListGroup'));
+              var delBtn = createElement(btn.delete);
+              appendElement(delBtn,el);
+              var upBtn = createElement(btn.update);
+              appendElement(upBtn,el);
+              
+            });
+            var btn = genericBtn()
+            btn.removeAttribute('data-bs-target');
+            btn.setAttribute('data-bs-target','#productListModal');
+            btn.click();
+        }
+  
+    }
+
+    function deleteProduct(event){
+        document.querySelector('.productListModalClose').click();//this closes the previous product list modal.
+        //console.log(event.target.dataset.id);
+        document.querySelector('.salesTable').querySelectorAll('select').forEach(e=>{
+            if(e.value===event.target.dataset.id){
+              document.querySelector('.salesTable').removeChild(e.parentNode.parentNode.parentNode.parentNode);
+            };
+        });
+        updateCountSN(document.querySelectorAll('.snDisplay'));
+        subTotal();
+      }
+
+      function updateCountSN(element){
+        var i=0;
+        element.forEach(e=>{ 
+            e.innerHTML = ++i;
+        });
+    }
+  
+    
+  
+
+
 
 
 

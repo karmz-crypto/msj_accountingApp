@@ -83,7 +83,7 @@
         <div class="col-12 mt-2 salesTable">
             <li class="list-group-item-warning list-group-item text-capitalize fw-bold">
                 sales list item
-                <span class="float-end fw-bold">e d i t !</span>
+                <span class="float-end fw-bold" type='button' onclick="editProductProcess()">e d i t !</span>
             </li>
         </div>
         <div class="col-12 mt-2 mb-2 saleSubTotal">
@@ -233,6 +233,31 @@
         </div>
         <div class="modal-footer">
             <span class="text-success text-capitalize reminderWarningModal" onclick="setReminder('product')">set reminder</span> 
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--modal sale product list-->
+  <!-- Modal -->
+  <div class="modal fade" id="productListModal" tabindex="-1" aria-labelledby="productListModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="productListModalLabel">Purchase Product List</h5>
+          <button type="button" class="btn-close productListModalClose" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-capitalize">
+            <ul class="list-group productListGroup text-muted fw-bold ">Click on the produt to edit
+                
+            </ul>
+        </div>
+        <div class="modal-footer">
+          <!--<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>-->
+          <li class="list-group-item list-group-item-danger fw-bold text-danger">
+              # the selected item will be removed from the purchase list for updating the product detail entries
+          </li>
         </div>
       </div>
     </div>
