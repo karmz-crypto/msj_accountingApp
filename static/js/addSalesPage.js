@@ -32,6 +32,8 @@ var client = {
     fineSilverStatus:0,
     cashStatus:0,
     clientType:'',
+    netFineSilver:0, //from sale table
+    netSaleCash:0, //from sale table
     setClientData:function(data){
         this.fineSilverStatus = data.paymentStatusSilver;
         this.cashStatus = data.paymentStatusCash;
@@ -59,10 +61,28 @@ var client = {
             document.querySelector('.cashStatus').innerHTML=this.cashStatus;
         }
         document.querySelector('.clientDataDiv').classList.remove('d-none');
+        this.onAddingProduct(this.netFineSilver,this.netSaleCash);
     },
     onAddingProduct:function(netFineSilver,netSaleCash){
-        document.querySelector('.calFineSilver').innerHTML = netFineSilver+this.fineSilverStatus;
-        document.querySelector('.calCashStatus').innerHTML = netSaleCash+this.cashStatus;
+        this.netFineSilver = netFineSilver;
+        this.netSaleCash = netSaleCash;
+        document.querySelector('.calFineSilver').innerHTML = this.netFineSilver+this.fineSilverStatus;
+        document.querySelector('.calCashStatus').innerHTML = this.netSaleCash+this.cashStatus;
+        //
+        //document.querySelector('.calFineSilver').innerHTML = parseFloat(document.querySelector('.fineSilverStatus').innerHTML)+netFineSilver;
+        var calFineSilver = parseFloat(document.querySelector('.calFineSilver').innerHTML);
+        if(calFineSilver>0){
+            document.querySelector('.calFineSilver').classList.add('text-danger')
+        }else{
+            document.querySelector('.calFineSilver').classList.remove('text-danger');
+        }
+        //document.querySelector('.calCashStatus').innerHTML=parseFloat(document.querySelector('.cashStatus').innerHTML)+netSaleCash;
+        var calCashStatus=parseFloat(document.querySelector('.calCashStatus').innerHTML);
+        if(calCashStatus>0){
+            document.querySelector('.calCashStatus').classList.add('text-danger')
+        }else{
+            document.querySelector('.calCashStatus').classList.remove('text-danger');
+        }
     },
     fetchClientData:function(){
         var url = `/apiPageRouter/getSelectedClient/${this.clientId}`;
@@ -125,6 +145,7 @@ var productModal ={
             document.querySelector('.productListModalClose').click();//this closes the previous product list modal.
             updateCountSN(document.querySelectorAll('.snDisplay'));
             subTotal();
+            //clientSubTotal();
         }
         else{ // this is original fetch of product details via onchange of product
             this.productId=event.target.value;
@@ -259,11 +280,13 @@ function subTotal(){
     Array.from(document.querySelectorAll('input')).filter(el=>el.getAttribute('name')==='labourCash').forEach(e=>{
         netSaleCash =netSaleCash+parseFloat(e.value);
     });
-    console.log(netSaleCash,netFineSilver);
+    //console.log(netSaleCash,netFineSilver);
     document.querySelector('#netFineSilver').value = netFineSilver;
     document.querySelector('.netFineSilver').innerHTML = document.querySelector('#netFineSilver').value;
     document.querySelector('#netSaleCash').value = netSaleCash;
     document.querySelector('.netSaleCash').innerHTML = document.querySelector('#netSaleCash').value ;
+    //clientSubTotal(netFineSilver,netSaleCash);
+    client.onAddingProduct(netFineSilver,netSaleCash);
 }
 
 var warningModal = {
