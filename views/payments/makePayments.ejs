@@ -1,0 +1,212 @@
+<div class="container mt-2 mb-2">
+    <li class="list-group-item list-group-item-light text-capitalize text-success">
+        Make A payment 
+    </li>
+</div>
+<div class="container mb-2">
+    <span class="text-muted"> Date : <script> document.write(new Date().toLocaleDateString('en-GB')); </script></span>
+</div>
+<!--<div class="container mb-2 text-capitalize d-none">
+    <table class="table table-striped caption-top">
+        <caption class="fw-bold">List of clients to make payments</caption>
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Client</th>
+            <th scope="col">Silver(Grms)</th>
+            <th scope="col">Cash(rs)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Anupam jewellers</td>
+            <td>Otto</td>
+            <td>Otto</td>
+          </tr>
+        </tbody>
+    </table>
+    <div class="form-text text-success text-center"># click on the client to make payment entries</div>
+</div>-->
+
+<div class="container mb-2 text-capitalize text-muted">
+    <div class="row mb-2">
+        <div class="col-12 col-md-6 col-lg-6 col-xl-6 mb-2">
+            <select class="form-select text-capitalize fw-bold mb-2 " name="clientId" aria-label="Default select example">
+                <option value="0" selected>Select a client</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            <div class="form-text text-muted m-2">
+                client not in list <a href="/addClients" class="text-decoration-none mx-1 fw-bold">Add Client</a>
+            </div>
+            <div class="clientData d-none mt-2 border-bottom border-top rounded border-secondary">
+                <div class="row mb-2">
+                    <div class="col-12 form-text text-muted mb-2"><span class="float-end">* fine silver in grms & cash status in rupees</span></div>
+                    <div class="col-6">
+                        <div class="col-12 text-center">
+                            fine silver status.
+                        </div>
+                        <div class="col-12 text-success fw-bold text-center">
+                            9999
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="col-12 text-center">
+                            calculated fine silver.
+                        </div>
+                        <div class="col-12 text-center text-success fw-bold">
+                            9999
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6">
+                        <div class="col-12 text-center">
+                            cash status
+                        </div>
+                        <div class="col-12 text-success fw-bold text-center">
+                            9999
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="col-12 text-center">
+                            calculated cash status.
+                        </div>
+                        <div class="col-12 text-center text-success fw-bold">
+                            9999
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-6 col-xl-6 mb-2">
+            <div class="col-12 mb-2">
+                select payment mode
+            </div>
+            <div class="col-12 border border-secondary">
+                <div class="col-12 text-center border-bottom border-secondary">bullion</div>
+                <div class="row">
+                    <div class="col-4 text-center border-end border-secondary p-2">
+                        <span class="text-success fw-bold" onclick="" type="button">kachi</span>
+                    </div>
+                    <div class="col-4 text-center border-end border-secondary p-2">
+                        <span class="text-success fw-bold" onclick="paymentModal.onSelectBullion.onSelectChoursa()" type="button">choursa</span>
+                    </div>
+                    <div class="col-4 text-center p-2">
+                        <span class="text-success fw-bold" onclick="" type="button">9999</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 border border-secondary">
+                <div class="col-12 text-center border-bottom border-secondary">cash</div>
+                <div class="row">
+                    <div class="col-4 text-center border-end border-secondary p-2">
+                        <span class="text-success fw-bold" onclick="" type="button">cash</span>
+                    </div>
+                    <div class="col-4 text-center border-end border-secondary p-2">
+                        <span class="text-success fw-bold" onclick="paymentModal.onSelectCash.onSelectRtgs()" type="button">rtgs/upi</span>
+                    </div>
+                    <div class="col-4 text-center p-2">
+                        <span class="text-success fw-bold" onclick="" type="button">cheque</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--modal-->
+<!-- Button trigger modal -->
+
+<button type="button" class="d-none modalBtn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    Launch static backdrop modal
+</button>  
+  <!-- Modal -->
+<div class="container">
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-capitalize" id="staticBackdropLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-capitalize text-muted">
+            <div class="row bullionData mb-2">
+                <div class="col-6">
+                   <span class="form-text"> inStock weight</span><br> 
+                   <span class="inStockWeight text-success fw-bold"> 9999 </span>
+                </div>
+                <div class="col-6">
+                    <span class="form-text">remaining stock</span><br> 
+                    <span class="calStockWeight text-success fw-bold"> 9999 </span>
+                </div>
+            </div>
+            <div class="row bankCashData mb-2">
+                <div class="col-6">
+                   <span class="form-text">bank balance</span><br> 
+                   <span class="inStockWeight text-success fw-bold"> 9999 </span>
+                </div>
+                <div class="col-6">
+                    <span class="form-text">remaing balance</span><br> 
+                    <span class="calStockWeight text-success fw-bold"> 9999 </span>
+                </div>
+            </div>
+            <div class="row officeCashData mb-2">
+                <div class="col-6">
+                   <span class="form-text">cash balance</span><br> 
+                   <span class="inStockWeight text-success fw-bold"> 9999 </span>
+                </div>
+                <div class="col-6">
+                    <span class="form-text">remaining cash</span><br> 
+                    <span class="calStockWeight text-success fw-bold"> 9999 </span>
+                </div>
+            </div>
+            <div class="row mb-2 choursaBullion d-none">
+                <div class="col-6">
+                    <label for="choursaPurity" class="form-label form-text">Choursa Purity</label>
+                    <input class="form-control" name="choursaPurity" id="choursaPurity" value=99 type="number" step="any">
+                    <div class="form-text text-success">Purity in %</div>
+                </div>
+                <div class="col-6">
+                    <label for="choursaWeight" class="form-label form-text">Choursa Weight</label>
+                    <input class="form-control" name="choursaWeight" id="choursaWeight" value=0 type="number" step="any">
+                    <div class="form-text text-success">Weight in Grams</div>
+                </div>
+            </div>
+            <div class="row mb-2 pureBullion d-none">
+                <div class="col-6">
+                    <label for="choursaPurity" class="form-label form-text">9999 Purity</label>
+                    <input class="form-control" name="choursaPurity" id="choursaPurity" value=100 type="number" step="any">
+                    <div class="form-text text-success">Purity in %</div>
+                </div>
+                <div class="col-6">
+                    <label for="choursaWeight" class="form-label form-text">9999 Weight</label>
+                    <input class="form-control" name="choursaWeight" id="choursaWeight" value=0 type="number" step="any">
+                    <div class="form-text text-success">Weight in Grams</div>
+                </div>
+            </div>
+            <div class="row mb-2 cash d-none">
+                <div class="col-6">
+                    <label class="form-label" for="cashAmount">Amount</label>
+                    <input type="number" step="any" id="cashAmount" name="cashAmount" value=0 class="form-control">
+                    <div class="form-text text-success">Amount in Rupees</div>
+                </div>
+                <div class="col-6">
+                    <label class="form-label" for="cash-type">Payment Mode</label>
+                    <input class="form-control" name="cash-type" id="cash-type" readonly>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+<script type="text/javascript" src="/makePayments.js"></script>

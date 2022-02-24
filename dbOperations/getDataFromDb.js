@@ -50,14 +50,14 @@ function getSelectedProductData(id){
 
 function getSelectedProductDataApi(id,res){
     productModel.findById(id).then(e=>{
-        res.send(e)
+        res.json(e) //res.send(e);
     }).catch(err=>{res.send(err)});
 }
 
 function getCompleteProductDataApi(res){
     productModel.find().then(
         e=>{
-            res.send(e);
+            res.json(e); //res.send(e);
         }
     ).catch();
 }

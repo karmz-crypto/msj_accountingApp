@@ -36,6 +36,7 @@ api.get('/addProduct',productController.addProductPage);
 
 //pyments get routes
 api.get('/payments',paymentsController.getPayments);
+api.get('/makePayments',paymentsController.makePayments);
 
 // post calls 
     // 0. signin post calls
