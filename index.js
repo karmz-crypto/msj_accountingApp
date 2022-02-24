@@ -7,8 +7,10 @@ const port = process.env.PORT || 7000;
 const pageRouter = require('./routers/pageRouter');
 const apiPageRouter = require('./routers/apiPageRouter');
 const { checkNetworkStatus } = require('check-network-status');
+const cors = require('cors');
 //require('dotenv').config();  //changed 23/1/22
 const app = express();
+app.use(cors);
 checkNetworkStatus({
     timeout: 3000,
     //backUpURL: 'https://example.com',
